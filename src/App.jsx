@@ -547,7 +547,7 @@ export default function FitnessTracker() {
       {!onboardingDone && (
         <div style={{ position: "fixed", inset: 0, zIndex: 200 }}>
           {/* Dim overlay */}
-          <div style={{ position: "absolute", inset: 0, background: "#000000bb" }} />
+          <div style={{ position: "absolute", inset: 0, background: "#00000070" }} />
 
           {/* Highlight active tab */}
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "130px", background: "transparent" }} />
