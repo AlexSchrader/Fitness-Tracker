@@ -393,7 +393,6 @@ export default function FitnessTracker() {
               <div style={{ fontSize: "10px", color: "#ffffff60" }}>{currentWeight} lbs · {totalWorkouts} workouts · 🔥 {streak} streak</div>
             </div>
           </div>
-          <button onClick={() => setShowWeightPrompt(true)} style={{ padding: "6px 10px", borderRadius: "16px", border: "1px solid #4ecdc460", background: "#4ecdc410", color: "#4ecdc4", fontSize: "10px", fontFamily: "inherit", cursor: "pointer" }}>+ Weight</button>
         </div>
       </div>
 
@@ -850,14 +849,14 @@ export default function FitnessTracker() {
           <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", marginBottom: "16px", overflow: "hidden" }}>
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff10", fontSize: "11px", letterSpacing: "0.12em", color: "#ffffff60" }}>GOALS</div>
             {[
-              { label: "Starting Weight (lbs)", key: "startingWeight", type: "number" },
-              { label: "Goal Weight (lbs)", key: "goalWeight", type: "number" },
-              { label: "Daily Calorie Goal", key: "calorieGoal", type: "number" },
-              { label: "Daily Protein Goal (g)", key: "proteinGoal", type: "number" },
+              { label: "Starting Weight (lbs)", key: "startingWeight", type: "number", placeholder: "e.g. 165" },
+              { label: "Goal Weight (lbs)", key: "goalWeight", type: "number", placeholder: "e.g. 185" },
+              { label: "Daily Calorie Goal", key: "calorieGoal", type: "number", placeholder: "e.g. 3000" },
+              { label: "Daily Protein Goal (g)", key: "proteinGoal", type: "number", placeholder: "e.g. 150" },
             ].map(f => (
               <div key={f.key} style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff08", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div style={{ fontSize: "13px", color: "#ffffff80" }}>{f.label}</div>
-                <input value={settings[f.key] || ""} onChange={e => setSettings(s => ({ ...s, [f.key]: parseFloat(e.target.value) || 0 }))} type="number"
+                <input value={settings[f.key] || ""} onChange={e => setSettings(s => ({ ...s, [f.key]: parseFloat(e.target.value) || 0 }))} type="number" placeholder={f.placeholder || ""}
                   style={{ background: "#1a1a1a", border: "1px solid #ffffff15", borderRadius: "8px", padding: "6px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit", width: "100px", textAlign: "right" }} />
               </div>
             ))}
