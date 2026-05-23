@@ -105,6 +105,129 @@ const getCalorieEstimate = (text) => {
   return { cal: 0, known: false, needsQuestion: null };
 };
 
+const SmartMealInput = ({ label, valueKey, calKey, placeholder, section, dayData, updateDay, savedFoods, setSavedFoods, foodQuestions, setFoodQuestions, editModeSection, setEditModeSection, restaurantQuery, setRestaurantQuery, restaurantSuggestions, setRestaurantSuggestions }) => {
+  const val = dayData[valueKey] || "";
+  const manualCal = dayData[calKey] || 0;
+  const est = getCalorieEstimate(val);
+  const displayCal = manualCal || est.cal;
+  const needsManual = val.length > 2 && !est.known && !est.needsQuestion && !manualCal;
+  const question = foodQuestions[valueKey];
+
+  const handleChange = (newVal) => {
+    updateDay({ [valueKey]: newVal, [calKey]: 0 });
+    const newEst = getCalorieEstimate(newVal);
+    if (newEst.needsQuestion) {
+      setFoodQuestions(q => ({ ...q, [valueKey]: newEst.needsQuestion }));
+    } else {
+      setFoodQuestions(q => { const c = { ...q }; delete c[valueKey]; return c; });
+    }
+  };
+
+  const handleBlur = () => {
+    if (val.length > 1 && !(savedFoods[section] || []).includes(val)) {
+      setSavedFoods(sf => ({ ...sf, [section]: [...sf[section], val] }));
+    }
+  };
+
+  const removeSavedFood = (food) => setSavedFoods(sf => ({ ...sf, [section]: sf[section].filter(f => f !== food) }));
+
+  const handleRestaurantInput = (v) => {
+    setRestaurantQuery(q => ({ ...q, [valueKey]: v }));
+    if (v.length > 1) {
+      setRestaurantSuggestions(s => ({ ...s, [valueKey]: RESTAURANTS.filter(r => r.toLowerCase().includes(v.toLowerCase())).slice(0, 5) }));
+    } else {
+      setRestaurantSuggestions(s => ({ ...s, [valueKey]: [] }));
+    }
+  };
+
+  const handleFoodAnswer = (answer, cal) => {
+    const newQ = { ...foodQuestions };
+    if (newQ[valueKey]?.type === "source" && answer === "Went out") { newQ[valueKey] = { ...newQ[valueKey], step: "restaurant" }; setFoodQuestions(newQ); return; }
+    if (newQ[valueKey]?.step === "restaurant") { newQ[valueKey] = { ...newQ[valueKey], step: "size", restaurant: answer }; setFoodQuestions(newQ); return; }
+    updateDay({ [calKey]: cal });
+    const c = { ...foodQuestions }; delete c[valueKey]; setFoodQuestions(c);
+  };
+
+  return (
+    <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff08" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+        <div style={{ fontSize: "10px", color: "#e94560", letterSpacing: "0.08em" }}>{label}</div>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          {displayCal > 0 && <div style={{ fontSize: "11px", color: "#ffffff50" }}>~{displayCal} cal</div>}
+          {(savedFoods[section] || []).length > 0 && (
+            <button onClick={() => setEditModeSection(editModeSection === section ? null : section)} style={{ fontSize: "10px", color: "#ffffff30", background: "transparent", border: "none", cursor: "pointer", padding: "0" }}>
+              {editModeSection === section ? "Done" : "Edit"}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {(savedFoods[section] || []).length > 0 && (
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
+          {(savedFoods[section] || []).map(food => (
+            <button key={food} onClick={() => editModeSection === section ? removeSavedFood(food) : handleChange(food)}
+              style={{ padding: "5px 10px", borderRadius: "12px", border: val === food ? "1px solid #e94560" : editModeSection === section ? "1px solid #e9456060" : "1px solid #ffffff15", background: val === food ? "#e9456015" : "transparent", color: val === food ? "#e94560" : editModeSection === section ? "#e9456080" : "#ffffff60", fontSize: "11px", fontFamily: "inherit", cursor: "pointer" }}>
+              {editModeSection === section && <span style={{ marginRight: "4px" }}>×</span>}{food}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <input placeholder={placeholder} value={val} onChange={e => handleChange(e.target.value)} onBlur={handleBlur}
+        style={{ width: "100%", background: "#1a1a1a", border: `1px solid ${needsManual ? "#f5a62360" : "#ffffff15"}`, borderRadius: "8px", padding: "10px 12px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box" }} />
+
+      {question && (
+        <div style={{ marginTop: "8px", background: "#1a1a1a", borderRadius: "8px", border: "1px solid #4ecdc430", padding: "12px" }}>
+          {question.step === "restaurant" ? (
+            <>
+              <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>Where did you go?</div>
+              <input placeholder="Type restaurant name..." value={restaurantQuery[valueKey] || ""} onChange={e => handleRestaurantInput(e.target.value)}
+                style={{ width: "100%", background: "#111", border: "1px solid #ffffff15", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box", marginBottom: "6px" }} />
+              {(restaurantSuggestions[valueKey] || []).map(r => (
+                <button key={r} onClick={() => { handleFoodAnswer(r, 0); updateDay({ [valueKey]: `${val} from ${r}` }); setRestaurantQuery(q => ({ ...q, [valueKey]: "" })); setRestaurantSuggestions(s => ({ ...s, [valueKey]: [] })); }}
+                  style={{ display: "block", width: "100%", padding: "8px 10px", background: "transparent", border: "1px solid #ffffff15", borderRadius: "6px", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", textAlign: "left", marginBottom: "4px" }}>{r}</button>
+              ))}
+              {restaurantQuery[valueKey]?.length > 1 && !(restaurantSuggestions[valueKey] || []).length && (
+                <button onClick={() => { handleFoodAnswer(restaurantQuery[valueKey], 0); updateDay({ [valueKey]: `${val} from ${restaurantQuery[valueKey]}` }); setRestaurantQuery(q => ({ ...q, [valueKey]: "" })); }}
+                  style={{ display: "block", width: "100%", padding: "8px 10px", background: "#4ecdc415", border: "1px solid #4ecdc440", borderRadius: "6px", color: "#4ecdc4", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
+                  Use "{restaurantQuery[valueKey]}"
+                </button>
+              )}
+              <div style={{ fontSize: "10px", color: "#ffffff30", marginTop: "8px" }}>Pick a size:</div>
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "6px" }}>
+                {["Small (~380 cal)", "Medium (~540 cal)", "Large (~720 cal)"].map(opt => {
+                  const cal = parseInt(opt.match(/\d+/)[0]);
+                  return <button key={opt} onClick={() => { updateDay({ [calKey]: cal }); const c = { ...foodQuestions }; delete c[valueKey]; setFoodQuestions(c); }} style={{ padding: "6px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>;
+                })}
+              </div>
+            </>
+          ) : (
+            <>
+              <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>
+                {question.type === "size" ? "What size?" : question.type === "source" ? "Homemade or went out?" : "How many?"}
+              </div>
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                {question.options.map(opt => {
+                  const cal = parseInt((opt.match(/\d+/) || [0])[0]);
+                  return <button key={opt} onClick={() => handleFoodAnswer(opt, cal)} style={{ padding: "6px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>;
+                })}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {needsManual && (
+        <div style={{ marginTop: "8px" }}>
+          <div style={{ fontSize: "11px", color: "#f5a623", marginBottom: "4px" }}>⚠️ Calories unknown — enter manually:</div>
+          <input placeholder="Enter calories" type="number" value={manualCal || ""} onChange={e => updateDay({ [calKey]: parseInt(e.target.value) || 0 })}
+            style={{ width: "100%", background: "#1a1a1a", border: "1px solid #f5a62360", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box" }} />
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function FitnessTracker() {
   const [settings, setSettings] = useState({ name: "Alex", startingWeight: 165, goalWeight: 185, height: "", age: 24, calorieGoal: CALORIE_GOAL_DEFAULT, proteinGoal: PROTEIN_GOAL_DEFAULT, workoutDays: DEFAULT_WORKOUT_DAYS });
   const [week, setWeek] = useState(initialWeek(DEFAULT_WORKOUT_DAYS));
@@ -257,129 +380,6 @@ export default function FitnessTracker() {
     <button onClick={() => setView(v)} style={{ flex: 1, padding: "8px 2px", border: "none", background: view === v ? "linear-gradient(135deg, #e94560, #f5a623)" : "transparent", color: view === v ? "#fff" : "#ffffff50", fontSize: "9px", fontFamily: "inherit", cursor: "pointer", letterSpacing: "0.06em", borderRadius: "8px", fontWeight: view === v ? "700" : "400" }}>{label}</button>
   );
 
-  const SmartMealInput = ({ label, valueKey, calKey, placeholder, section }) => {
-    const val = day[valueKey] || "";
-    const manualCal = day[calKey] || 0;
-    const est = getCalorieEstimate(val);
-    const displayCal = manualCal || est.cal;
-    const needsManual = val.length > 2 && !est.known && !est.needsQuestion && !manualCal;
-    const question = foodQuestions[valueKey];
-
-    const handleChange = (newVal) => {
-      updateDay({ [valueKey]: newVal, [calKey]: 0 });
-      const newEst = getCalorieEstimate(newVal);
-      if (newEst.needsQuestion) {
-        setFoodQuestions(q => ({ ...q, [valueKey]: newEst.needsQuestion }));
-      } else {
-        setFoodQuestions(q => { const c = { ...q }; delete c[valueKey]; return c; });
-      }
-    };
-
-    const handleBlur = () => {
-      if (val.length > 1 && !savedFoods[section]?.includes(val)) {
-        saveFoodItem(section, val);
-      }
-    };
-
-    return (
-      <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff08" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-          <div style={{ fontSize: "10px", color: "#e94560", letterSpacing: "0.08em" }}>{label}</div>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            {displayCal > 0 && <div style={{ fontSize: "11px", color: "#ffffff50" }}>~{displayCal} cal</div>}
-            <button onClick={() => setEditModeSection(editModeSection === section ? null : section)} style={{ fontSize: "10px", color: "#ffffff30", background: "transparent", border: "none", cursor: "pointer", padding: "0" }}>
-              {editModeSection === section ? "Done" : "Edit"}
-            </button>
-          </div>
-        </div>
-
-        {/* Saved food bubbles */}
-        {savedFoods[section]?.length > 0 && (
-          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
-            {savedFoods[section].map(food => (
-              <button key={food} onClick={() => editModeSection === section ? removeSavedFood(section, food) : handleChange(food)}
-                style={{ padding: "5px 10px", borderRadius: "12px", border: val === food ? "1px solid #e94560" : editModeSection === section ? "1px solid #e9456060" : "1px solid #ffffff15", background: val === food ? "#e9456015" : editModeSection === section ? "#e9456008" : "transparent", color: val === food ? "#e94560" : editModeSection === section ? "#e9456080" : "#ffffff60", fontSize: "11px", fontFamily: "inherit", cursor: "pointer", position: "relative" }}>
-                {editModeSection === section && <span style={{ marginRight: "4px" }}>×</span>}
-                {food}
-              </button>
-            ))}
-          </div>
-        )}
-
-        <input
-          placeholder={placeholder}
-          value={val}
-          onChange={e => handleChange(e.target.value)}
-          onBlur={handleBlur}
-          style={{ width: "100%", background: "#1a1a1a", border: `1px solid ${needsManual ? "#f5a62360" : "#ffffff15"}`, borderRadius: "8px", padding: "10px 12px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box" }}
-        />
-
-        {/* Smart questions */}
-        {question && (
-          <div style={{ marginTop: "8px", background: "#1a1a1a", borderRadius: "8px", border: "1px solid #4ecdc430", padding: "12px" }}>
-            {question.step === "restaurant" ? (
-              <>
-                <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>Where did you go?</div>
-                <input
-                  placeholder="Type restaurant name..."
-                  value={restaurantQuery[valueKey] || ""}
-                  onChange={e => handleRestaurantInput(valueKey, e.target.value)}
-                  style={{ width: "100%", background: "#111", border: "1px solid #ffffff15", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box", marginBottom: "6px" }}
-                />
-                {(restaurantSuggestions[valueKey] || []).map(r => (
-                  <button key={r} onClick={() => { handleFoodAnswer(valueKey, calKey, r, 0); setRestaurantQuery(q => ({ ...q, [valueKey]: "" })); setRestaurantSuggestions(s => ({ ...s, [valueKey]: [] })); updateDay({ [valueKey]: `${val} from ${r}` }); }}
-                    style={{ display: "block", width: "100%", padding: "8px 10px", background: "transparent", border: "1px solid #ffffff15", borderRadius: "6px", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", textAlign: "left", marginBottom: "4px" }}>
-                    {r}
-                  </button>
-                ))}
-                {restaurantQuery[valueKey]?.length > 1 && (restaurantSuggestions[valueKey] || []).length === 0 && (
-                  <button onClick={() => { handleFoodAnswer(valueKey, calKey, restaurantQuery[valueKey], 0); updateDay({ [valueKey]: `${val} from ${restaurantQuery[valueKey]}` }); setRestaurantQuery(q => ({ ...q, [valueKey]: "" })); }}
-                    style={{ display: "block", width: "100%", padding: "8px 10px", background: "#4ecdc415", border: "1px solid #4ecdc440", borderRadius: "6px", color: "#4ecdc4", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
-                    Use "{restaurantQuery[valueKey]}"
-                  </button>
-                )}
-                <div style={{ fontSize: "10px", color: "#ffffff30", marginTop: "8px" }}>Then pick a size:</div>
-                <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "6px" }}>
-                  {["Small (~380 cal)", "Medium (~540 cal)", "Large (~720 cal)"].map(opt => {
-                    const cal = parseInt(opt.match(/\d+/)[0]);
-                    return <button key={opt} onClick={() => { updateDay({ [calKey]: cal }); const c = { ...foodQuestions }; delete c[valueKey]; setFoodQuestions(c); }} style={{ padding: "6px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>;
-                  })}
-                </div>
-              </>
-            ) : (
-              <>
-                <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>
-                  {question.type === "size" ? "What size?" : question.type === "source" ? "Homemade or went out?" : "How many?"}
-                </div>
-                <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                  {question.options.map(opt => {
-                    const calMatch = opt.match(/\d+/);
-                    const cal = calMatch ? parseInt(calMatch[0]) : 0;
-                    return (
-                      <button key={opt} onClick={() => handleFoodAnswer(valueKey, calKey, opt, cal)}
-                        style={{ padding: "6px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer" }}>
-                        {opt}
-                      </button>
-                    );
-                  })}
-                </div>
-              </>
-            )}
-          </div>
-        )}
-
-        {/* Unknown food manual entry */}
-        {needsManual && (
-          <div style={{ marginTop: "8px" }}>
-            <div style={{ fontSize: "11px", color: "#f5a623", marginBottom: "4px" }}>⚠️ Calories unknown — enter manually:</div>
-            <input placeholder="Enter calories" type="number" value={manualCal || ""} onChange={e => updateDay({ [calKey]: parseInt(e.target.value) || 0 })}
-              style={{ width: "100%", background: "#1a1a1a", border: "1px solid #f5a62360", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box" }} />
-          </div>
-        )}
-      </div>
-    );
-  };
-
   return (
     <div style={{ minHeight: "100vh", background: "#0a0a0a", color: "#f0f0f0", fontFamily: "'DM Mono', 'Courier New', monospace" }}>
 
@@ -488,7 +488,7 @@ export default function FitnessTracker() {
           <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", marginBottom: "16px", overflow: "hidden" }}>
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff10", fontSize: "11px", letterSpacing: "0.12em", color: "#ffffff60" }}>NUTRITION — {activeDay.toUpperCase()}</div>
 
-            <SmartMealInput label="BREAKFAST" valueKey="morning" calKey="morningCalories" placeholder="What did you eat for breakfast?" section="morning" />
+            <SmartMealInput label="BREAKFAST" valueKey="morning" calKey="morningCalories" placeholder="What did you eat for breakfast?" section="morning" dayData={day} updateDay={updateDay} savedFoods={savedFoods} setSavedFoods={setSavedFoods} foodQuestions={foodQuestions} setFoodQuestions={setFoodQuestions} editModeSection={editModeSection} setEditModeSection={setEditModeSection} restaurantQuery={restaurantQuery} setRestaurantQuery={setRestaurantQuery} restaurantSuggestions={restaurantSuggestions} setRestaurantSuggestions={setRestaurantSuggestions} />
 
             {/* Lunch */}
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff08" }}>
@@ -536,8 +536,8 @@ export default function FitnessTracker() {
               )}
             </div>
 
-            <SmartMealInput label="PRE-WORKOUT" valueKey="preWorkout" calKey="preWorkoutCalories" placeholder="What do you eat before working out?" section="preWorkout" />
-            <SmartMealInput label="POST-WORKOUT" valueKey="postWorkout" calKey="postWorkoutCalories" placeholder="What do you eat after working out?" section="postWorkout" />
+            <SmartMealInput label="PRE-WORKOUT" valueKey="preWorkout" calKey="preWorkoutCalories" placeholder="What do you eat before working out?" section="preWorkout" dayData={day} updateDay={updateDay} savedFoods={savedFoods} setSavedFoods={setSavedFoods} foodQuestions={foodQuestions} setFoodQuestions={setFoodQuestions} editModeSection={editModeSection} setEditModeSection={setEditModeSection} restaurantQuery={restaurantQuery} setRestaurantQuery={setRestaurantQuery} restaurantSuggestions={restaurantSuggestions} setRestaurantSuggestions={setRestaurantSuggestions} />
+            <SmartMealInput label="POST-WORKOUT" valueKey="postWorkout" calKey="postWorkoutCalories" placeholder="What do you eat after working out?" section="postWorkout" dayData={day} updateDay={updateDay} savedFoods={savedFoods} setSavedFoods={setSavedFoods} foodQuestions={foodQuestions} setFoodQuestions={setFoodQuestions} editModeSection={editModeSection} setEditModeSection={setEditModeSection} restaurantQuery={restaurantQuery} setRestaurantQuery={setRestaurantQuery} restaurantSuggestions={restaurantSuggestions} setRestaurantSuggestions={setRestaurantSuggestions} />
           </div>
 
           <div style={{ padding: "12px 16px", borderRadius: "12px", background: "linear-gradient(135deg, #e9456008, #f5a62308)", border: "1px solid #f5a62320" }}>
