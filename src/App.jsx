@@ -42,17 +42,64 @@ const DINNER_RECIPES = [
 ];
 
 const CALORIE_DB = {
+  // Sandwiches & wraps
   "Ham and cheese sandwich": 380, "Roast beef and cheese sandwich": 420, "Turkey and cheese sandwich": 360, "Chicken wrap": 400,
+  // Sides & snacks
   "YoCrunch yogurt": 150, "Carrots": 35, "Apple": 80, "Grapes": 60, "String cheese": 80, "Nutri-Grain bar": 130,
+  "goldfish": 140, "goldfish crackers": 140, "gold fish": 140,
+  // Dinner recipes
   "Ground Beef Tacos": 680, "Chicken Thighs & Mashed Potatoes": 680, "Steak & Mashed Potatoes": 740,
   "Spaghetti & Meat Sauce": 670, "Rotisserie Chicken & Rice": 650, "Shrimp & Buttered Rice": 630,
-  "Premier Protein shake": 160, "Fairlife Core Power": 420, "protein shake": 300,
-  "muffin mini": 90, "muffin regular": 180, "muffin large": 320,
-  "smoothie small": 220, "smoothie medium": 380, "smoothie large": 540,
-  "banana": 90, "orange": 70, "eggs": 140, "oatmeal": 300,
-  "chicken and rice": 550, "steak": 650, "pasta": 580, "pizza": 700,
-  "burger": 650, "sandwich": 400, "salad": 280, "soup": 250,
-  "cereal": 280, "pancakes": 450, "waffles": 420,
+  // Protein drinks
+  "Premier Protein shake": 160, "premier protein": 160, "fairlife core power": 420, "Fairlife Core Power": 420,
+  "protein shake": 300, "whey shake": 280, "whey protein": 280,
+  // Breakfast items
+  "oatmeal": 300, "oat meal": 300, "grits": 150, "cream of wheat": 160,
+  "cereal": 280, "frosted flakes": 150, "cheerios": 140, "lucky charms": 150, "froot loops": 150,
+  "toast": 130, "white toast": 130, "wheat toast": 120,
+  "bagel": 270, "bagel with cream cheese": 370,
+  "waffles": 420, "waffle": 210, "french toast": 380,
+  "breakfast sandwich": 450, "egg mcmuffin": 300, "sausage biscuit": 430,
+  "granola bar": 190, "nature valley bar": 190, "clif bar": 250, "kind bar": 200,
+  // Fruit
+  "banana": 90, "orange": 70, "strawberries": 50, "blueberries": 85,
+  "watermelon": 85, "pineapple": 80, "mango": 100, "peach": 60, "pear": 100,
+  "grapes": 60, "apple": 80,
+  // Proteins
+  "chicken breast": 165, "grilled chicken": 200, "fried chicken": 320,
+  "ground beef": 280, "beef": 280, "steak": 650, "salmon": 350, "tilapia": 160,
+  "tuna": 150, "tuna can": 150, "tuna sandwich": 350,
+  "shrimp": 200, "wings": 430, "chicken wings": 430,
+  "turkey": 180, "pork chop": 280, "bacon": 180, "sausage": 300,
+  // Carbs & sides
+  "white rice": 200, "brown rice": 215, "rice": 200,
+  "pasta": 580, "spaghetti": 580, "mac and cheese": 400, "macaroni": 380,
+  "mashed potatoes": 230, "baked potato": 160, "fries": 380, "french fries": 380,
+  "bread": 130, "roll": 120, "corn": 130, "broccoli": 55,
+  // Full meals
+  "chicken and rice": 550, "steak and potatoes": 740,
+  "pizza": 700, "burger": 650, "cheeseburger": 700,
+  "hot dog": 290, "sub": 500, "hoagie": 500,
+  "tacos": 480, "burrito": 700, "quesadilla": 520,
+  "fried rice": 450, "lo mein": 500, "ramen": 550,
+  "soup": 250, "chicken soup": 180, "tomato soup": 150,
+  "salad": 280, "caesar salad": 360, "side salad": 120,
+  // Fast food
+  "mcdonalds": 700, "chick fil a": 500, "chick-fil-a": 500,
+  "chipotle bowl": 700, "chipotle": 700, "subway": 500,
+  "wendys": 650, "wendy's": 650, "burger king": 700,
+  "raising canes": 750, "raising cane's": 750, "zaxbys": 700, "zaxby's": 700,
+  "cook out": 600, "cookout": 600, "panda express": 650,
+  // Drinks
+  "orange juice": 110, "apple juice": 120, "milk": 150, "chocolate milk": 190,
+  "gatorade": 140, "powerade": 130, "sports drink": 140,
+  "soda": 140, "sprite": 140, "coke": 140, "pepsi": 150, "dr pepper": 150,
+  // Sweets & desserts
+  "cookie": 150, "cookies": 300, "brownie": 240, "cake": 350,
+  "ice cream": 280, "chips": 150, "potato chips": 150, "doritos": 150,
+  // Dairy
+  "yogurt": 150, "greek yogurt": 130, "cottage cheese": 110,
+  "cheese": 110, "peanut butter": 190, "peanut butter and jelly": 380, "pbj": 380,
 };
 
 const FOOD_QUESTIONS = {
@@ -64,8 +111,16 @@ const FOOD_QUESTIONS = {
   sandwich: { type: "size", options: ["Small (~320 cal)", "Regular (~420 cal)", "Large (~580 cal)"] },
   burger: { type: "size", options: ["Single (~480 cal)", "Double (~650 cal)", "Triple (~820 cal)"] },
   pizza: { type: "quantity", options: ["1 slice (~280 cal)", "2 slices (~560 cal)", "3 slices (~840 cal)"] },
-  eggs: { type: "quantity", options: ["1 egg (~70 cal)", "2 eggs (~140 cal)", "3 eggs (~210 cal)"] },
+  eggs: { type: "quantity", options: ["1 egg (~70 cal)", "2 eggs (~140 cal)", "3 eggs (~210 cal)", "4 eggs (~280 cal)"] },
+  egg: { type: "quantity", options: ["1 egg (~70 cal)", "2 eggs (~140 cal)", "3 eggs (~210 cal)", "4 eggs (~280 cal)"] },
   pancakes: { type: "quantity", options: ["1 pancake (~150 cal)", "2 pancakes (~300 cal)", "3 pancakes (~450 cal)"] },
+  pancake: { type: "quantity", options: ["1 pancake (~150 cal)", "2 pancakes (~300 cal)", "3 pancakes (~450 cal)"] },
+  waffle: { type: "quantity", options: ["1 waffle (~210 cal)", "2 waffles (~420 cal)", "3 waffles (~630 cal)"] },
+  waffles: { type: "quantity", options: ["1 waffle (~210 cal)", "2 waffles (~420 cal)", "3 waffles (~630 cal)"] },
+  wings: { type: "quantity", options: ["6 wings (~430 cal)", "10 wings (~720 cal)", "15 wings (~1080 cal)"] },
+  cookie: { type: "quantity", options: ["1 cookie (~150 cal)", "2 cookies (~300 cal)", "3 cookies (~450 cal)"] },
+  slice: { type: "quantity", options: ["1 slice (~280 cal)", "2 slices (~560 cal)", "3 slices (~840 cal)"] },
+  bowl: { type: "size", options: ["Small (~400 cal)", "Regular (~600 cal)", "Large (~800 cal)"] },
 };
 
 const CALORIE_GOAL_DEFAULT = 3000;
@@ -86,22 +141,41 @@ const formatDate = (ts) => new Date(ts).toLocaleDateString([], { month: "short",
 const getCalorieEstimate = (text) => {
   if (!text || text.length < 2) return { cal: 0, known: true, needsQuestion: null };
   const lower = text.toLowerCase().trim();
-  for (const [key, cal] of Object.entries(CALORIE_DB)) {
-    if (lower === key.toLowerCase() || lower.includes(key.toLowerCase())) return { cal, known: true, needsQuestion: null };
-  }
+
+  // Check food questions first (quantity/size needed)
   for (const [keyword, qData] of Object.entries(FOOD_QUESTIONS)) {
     if (lower.includes(keyword)) return { cal: 0, known: false, needsQuestion: { keyword, ...qData } };
   }
+
+  // Exact match
+  for (const [key, cal] of Object.entries(CALORIE_DB)) {
+    if (lower === key.toLowerCase()) return { cal, known: true, needsQuestion: null };
+  }
+
+  // Contains match
+  for (const [key, cal] of Object.entries(CALORIE_DB)) {
+    if (lower.includes(key.toLowerCase()) || key.toLowerCase().includes(lower)) return { cal, known: true, needsQuestion: null };
+  }
+
+  // Fuzzy pattern matching
   const patterns = [
     { words: ["chicken", "rice"], cal: 550 }, { words: ["beef", "taco"], cal: 650 },
-    { words: ["steak"], cal: 700 }, { words: ["pasta", "spaghetti"], cal: 600 },
-    { words: ["shrimp"], cal: 500 }, { words: ["salmon", "fish"], cal: 520 },
-    { words: ["wrap"], cal: 380 }, { words: ["bowl"], cal: 550 },
-    { words: ["protein bar"], cal: 200 }, { words: ["yogurt"], cal: 150 },
+    { words: ["chicken", "breast"], cal: 165 }, { words: ["ground", "beef"], cal: 280 },
+    { words: ["peanut", "butter"], cal: 190 }, { words: ["mac", "cheese"], cal: 400 },
+    { words: ["fried", "rice"], cal: 450 }, { words: ["chicken", "wing"], cal: 430 },
+    { words: ["hash", "brown"], cal: 230 }, { words: ["french", "toast"], cal: 380 },
+    { words: ["protein", "bar"], cal: 200 }, { words: ["energy", "drink"], cal: 110 },
+    { words: ["hot", "dog"], cal: 290 }, { words: ["corn", "dog"], cal: 260 },
+    { words: ["potato", "chip"], cal: 150 }, { words: ["ice", "cream"], cal: 280 },
+    { words: ["chocolate", "milk"], cal: 190 }, { words: ["fried", "chicken"], cal: 320 },
   ];
+  for (const p of patterns) {
+    if (p.words.every(w => lower.includes(w))) return { cal: p.cal, known: false, needsQuestion: null };
+  }
   for (const p of patterns) {
     if (p.words.some(w => lower.includes(w))) return { cal: p.cal, known: false, needsQuestion: null };
   }
+
   return { cal: 0, known: false, needsQuestion: null };
 };
 
