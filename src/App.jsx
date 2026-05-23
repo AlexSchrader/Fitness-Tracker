@@ -41,86 +41,72 @@ const DINNER_RECIPES = [
     steps: ["Cook white rice and mix with butter and garlic salt.", "Pat shrimp dry with paper towels.", "Season shrimp with garlic powder, paprika, salt and pepper.", "Heat butter in a pan over medium-high heat.", "Cook shrimp 2 min each side until pink and slightly curled.", "Serve over buttered rice with carrots on the side."] },
 ];
 
-const CALORIE_DB = {
-  // Sandwiches & wraps
-  "Ham and cheese sandwich": 380, "Roast beef and cheese sandwich": 420, "Turkey and cheese sandwich": 360, "Chicken wrap": 400,
+// Food database - name: calories
+const FOOD_DB = {
+  // Sandwiches
+  "Ham and cheese sandwich": 380, "Roast beef and cheese sandwich": 420, "Turkey and cheese sandwich": 360,
+  "Chicken wrap": 400, "Tuna sandwich": 350, "PBJ": 380, "Peanut butter and jelly": 380,
+  "Sub": 500, "Hoagie": 500, "Grilled cheese": 350,
   // Sides & snacks
-  "YoCrunch yogurt": 150, "Carrots": 35, "Apple": 80, "Grapes": 60, "String cheese": 80, "Nutri-Grain bar": 130,
-  "goldfish": 140, "goldfish crackers": 140, "gold fish": 140,
-  // Dinner recipes
-  "Ground Beef Tacos": 680, "Chicken Thighs & Mashed Potatoes": 680, "Steak & Mashed Potatoes": 740,
-  "Spaghetti & Meat Sauce": 670, "Rotisserie Chicken & Rice": 650, "Shrimp & Buttered Rice": 630,
-  // Protein drinks
-  "Premier Protein shake": 160, "premier protein": 160, "fairlife core power": 420, "Fairlife Core Power": 420,
-  "protein shake": 300, "whey shake": 280, "whey protein": 280,
-  // Breakfast items
-  "oatmeal": 300, "oat meal": 300, "grits": 150, "cream of wheat": 160,
-  "cereal": 280, "frosted flakes": 150, "cheerios": 140, "lucky charms": 150, "froot loops": 150,
-  "toast": 130, "white toast": 130, "wheat toast": 120,
-  "bagel": 270, "bagel with cream cheese": 370,
-  "waffles": 420, "waffle": 210, "french toast": 380,
-  "breakfast sandwich": 450, "egg mcmuffin": 300, "sausage biscuit": 430,
-  "granola bar": 190, "nature valley bar": 190, "clif bar": 250, "kind bar": 200,
+  "YoCrunch yogurt": 150, "Carrots": 35, "Apple": 80, "Grapes": 60, "String cheese": 80,
+  "Nutri-Grain bar": 130, "Goldfish crackers": 140, "Granola bar": 190, "Kind bar": 200,
+  "Clif bar": 250, "Chips": 150, "Doritos": 150, "Pretzels": 110, "Crackers": 130,
+  // Breakfast
+  "Oatmeal": 300, "Grits": 150, "Cereal": 280, "Frosted Flakes": 150, "Cheerios": 140,
+  "Toast": 130, "Bagel": 270, "Bagel with cream cheese": 370, "French toast": 380,
+  "Breakfast sandwich": 450, "Sausage biscuit": 430, "Croissant": 280,
+  "Bacon (3 strips)": 130, "Sausage links": 220, "Hash browns": 230,
+  // Protein
+  "Chicken breast": 165, "Grilled chicken": 200, "Fried chicken": 320,
+  "Ground beef": 280, "Steak": 650, "Salmon": 350, "Tilapia": 160,
+  "Tuna (can)": 150, "Shrimp": 200, "Turkey": 180, "Pork chop": 280,
+  "Hot dog": 290, "Burger patty": 300,
+  // Carbs
+  "White rice": 200, "Brown rice": 215, "Pasta": 400, "Mashed potatoes": 230,
+  "Baked potato": 160, "Fries": 380, "Corn": 130, "Bread slice": 80,
+  "Mac and cheese": 400, "Ramen": 550, "Lo mein": 500, "Fried rice": 450,
+  // Vegetables
+  "Broccoli": 55, "Salad": 120, "Caesar salad": 360, "Green beans": 44,
+  "Spinach": 20, "Mixed veggies": 80,
   // Fruit
-  "banana": 90, "orange": 70, "strawberries": 50, "blueberries": 85,
-  "watermelon": 85, "pineapple": 80, "mango": 100, "peach": 60, "pear": 100,
-  "grapes": 60, "apple": 80,
-  // Proteins
-  "chicken breast": 165, "grilled chicken": 200, "fried chicken": 320,
-  "ground beef": 280, "beef": 280, "steak": 650, "salmon": 350, "tilapia": 160,
-  "tuna": 150, "tuna can": 150, "tuna sandwich": 350,
-  "shrimp": 200, "wings": 430, "chicken wings": 430,
-  "turkey": 180, "pork chop": 280, "bacon": 180, "sausage": 300,
-  // Carbs & sides
-  "white rice": 200, "brown rice": 215, "rice": 200,
-  "pasta": 580, "spaghetti": 580, "mac and cheese": 400, "macaroni": 380,
-  "mashed potatoes": 230, "baked potato": 160, "fries": 380, "french fries": 380,
-  "bread": 130, "roll": 120, "corn": 130, "broccoli": 55,
-  // Full meals
-  "chicken and rice": 550, "steak and potatoes": 740,
-  "pizza": 700, "burger": 650, "cheeseburger": 700,
-  "hot dog": 290, "sub": 500, "hoagie": 500,
-  "tacos": 480, "burrito": 700, "quesadilla": 520,
-  "fried rice": 450, "lo mein": 500, "ramen": 550,
-  "soup": 250, "chicken soup": 180, "tomato soup": 150,
-  "salad": 280, "caesar salad": 360, "side salad": 120,
-  // Fast food
-  "mcdonalds": 700, "chick fil a": 500, "chick-fil-a": 500,
-  "chipotle bowl": 700, "chipotle": 700, "subway": 500,
-  "wendys": 650, "wendy's": 650, "burger king": 700,
-  "raising canes": 750, "raising cane's": 750, "zaxbys": 700, "zaxby's": 700,
-  "cook out": 600, "cookout": 600, "panda express": 650,
+  "Banana": 90, "Orange": 70, "Strawberries": 50, "Blueberries": 85,
+  "Watermelon": 85, "Mango": 100, "Peach": 60, "Pear": 100,
+  // Dairy & protein drinks
+  "Milk (cup)": 150, "Chocolate milk": 190, "Greek yogurt": 130, "Cottage cheese": 110,
+  "Cheese slice": 70, "Peanut butter (tbsp)": 95,
+  "Premier Protein shake": 160, "Fairlife Core Power": 420, "Protein shake": 300,
+  "Whey shake": 280,
   // Drinks
-  "orange juice": 110, "apple juice": 120, "milk": 150, "chocolate milk": 190,
-  "gatorade": 140, "powerade": 130, "sports drink": 140,
-  "soda": 140, "sprite": 140, "coke": 140, "pepsi": 150, "dr pepper": 150,
-  // Sweets & desserts
-  "cookie": 150, "cookies": 300, "brownie": 240, "cake": 350,
-  "ice cream": 280, "chips": 150, "potato chips": 150, "doritos": 150,
-  // Dairy
-  "yogurt": 150, "greek yogurt": 130, "cottage cheese": 110,
-  "cheese": 110, "peanut butter": 190, "peanut butter and jelly": 380, "pbj": 380,
+  "Orange juice": 110, "Apple juice": 120, "Gatorade": 140, "Powerade": 130,
+  "Sprite": 140, "Coke": 140, "Pepsi": 150, "Dr Pepper": 150, "Water": 0,
+  // Fast food
+  "Big Mac": 550, "Quarter Pounder": 520, "McChicken": 400, "Chicken nuggets (10)": 420,
+  "Whopper": 660, "Chick-fil-A sandwich": 500, "Chick-fil-A nuggets (8)": 260,
+  "Chipotle bowl": 700, "Subway 6 inch": 380, "Subway footlong": 760,
+  "Cook Out tray": 700, "Raising Cane's box": 750,
+  // Dinner recipes
+  "Ground Beef Tacos": 680, "Chicken Thighs & Mashed Potatoes": 680,
+  "Steak & Mashed Potatoes": 740, "Spaghetti & Meat Sauce": 670,
+  "Rotisserie Chicken & Rice": 650, "Shrimp & Buttered Rice": 630,
+  // Desserts
+  "Cookie": 150, "Brownie": 240, "Ice cream (cup)": 280, "Cake slice": 350,
 };
 
+// Foods that need quantity/size questions
 const FOOD_QUESTIONS = {
-  muffin: { type: "size", options: ["Mini (~90 cal)", "Regular (~180 cal)", "Large (~320 cal)"] },
-  smoothie: { type: "source", options: ["Homemade", "Went out"] },
-  shake: { type: "size", options: ["Small (~220 cal)", "Medium (~380 cal)", "Large (~480 cal)"] },
-  juice: { type: "size", options: ["Small (~120 cal)", "Medium (~200 cal)", "Large (~320 cal)"] },
-  coffee: { type: "size", options: ["Small (~50 cal)", "Medium (~150 cal)", "Large (~250 cal)"] },
-  sandwich: { type: "size", options: ["Small (~320 cal)", "Regular (~420 cal)", "Large (~580 cal)"] },
-  burger: { type: "size", options: ["Single (~480 cal)", "Double (~650 cal)", "Triple (~820 cal)"] },
-  pizza: { type: "quantity", options: ["1 slice (~280 cal)", "2 slices (~560 cal)", "3 slices (~840 cal)"] },
-  eggs: { type: "quantity", options: ["1 egg (~70 cal)", "2 eggs (~140 cal)", "3 eggs (~210 cal)", "4 eggs (~280 cal)"] },
-  egg: { type: "quantity", options: ["1 egg (~70 cal)", "2 eggs (~140 cal)", "3 eggs (~210 cal)", "4 eggs (~280 cal)"] },
-  pancakes: { type: "quantity", options: ["1 pancake (~150 cal)", "2 pancakes (~300 cal)", "3 pancakes (~450 cal)"] },
-  pancake: { type: "quantity", options: ["1 pancake (~150 cal)", "2 pancakes (~300 cal)", "3 pancakes (~450 cal)"] },
-  waffle: { type: "quantity", options: ["1 waffle (~210 cal)", "2 waffles (~420 cal)", "3 waffles (~630 cal)"] },
-  waffles: { type: "quantity", options: ["1 waffle (~210 cal)", "2 waffles (~420 cal)", "3 waffles (~630 cal)"] },
-  wings: { type: "quantity", options: ["6 wings (~430 cal)", "10 wings (~720 cal)", "15 wings (~1080 cal)"] },
-  cookie: { type: "quantity", options: ["1 cookie (~150 cal)", "2 cookies (~300 cal)", "3 cookies (~450 cal)"] },
-  slice: { type: "quantity", options: ["1 slice (~280 cal)", "2 slices (~560 cal)", "3 slices (~840 cal)"] },
-  bowl: { type: "size", options: ["Small (~400 cal)", "Regular (~600 cal)", "Large (~800 cal)"] },
+  "eggs": { type: "quantity", options: ["1 egg (~70 cal)", "2 eggs (~140 cal)", "3 eggs (~210 cal)", "4 eggs (~280 cal)"] },
+  "egg": { type: "quantity", options: ["1 egg (~70 cal)", "2 eggs (~140 cal)", "3 eggs (~210 cal)", "4 eggs (~280 cal)"] },
+  "pancake": { type: "quantity", options: ["1 (~150 cal)", "2 (~300 cal)", "3 (~450 cal)"] },
+  "waffle": { type: "quantity", options: ["1 (~210 cal)", "2 (~420 cal)", "3 (~630 cal)"] },
+  "pizza": { type: "quantity", options: ["1 slice (~280 cal)", "2 slices (~560 cal)", "3 slices (~840 cal)"] },
+  "wings": { type: "quantity", options: ["6 (~430 cal)", "10 (~720 cal)", "15 (~1080 cal)"] },
+  "muffin": { type: "size", options: ["Mini (~90 cal)", "Regular (~180 cal)", "Large (~320 cal)"] },
+  "smoothie": { type: "source", options: ["Homemade", "Went out"] },
+  "shake": { type: "size", options: ["Small (~220 cal)", "Medium (~380 cal)", "Large (~480 cal)"] },
+  "coffee": { type: "size", options: ["Small (~50 cal)", "Medium (~150 cal)", "Large (~250 cal)"] },
+  "juice": { type: "size", options: ["Small (~120 cal)", "Medium (~200 cal)", "Large (~320 cal)"] },
+  "bowl": { type: "size", options: ["Small (~400 cal)", "Regular (~600 cal)", "Large (~800 cal)"] },
+  "burger": { type: "size", options: ["Single (~480 cal)", "Double (~650 cal)", "Triple (~820 cal)"] },
 };
 
 const CALORIE_GOAL_DEFAULT = 3000;
@@ -129,7 +115,15 @@ const PROTEIN_GOAL_DEFAULT = 150;
 const initialWeek = (workoutDays) => {
   const week = {};
   DAYS.forEach(day => {
-    week[day] = { isWorkoutDay: workoutDays.includes(day), morning: "", morningCalories: 0, lunch: "", lunchSides: [], lunchCustom: "", lunchCalories: 0, dinner: "", dinnerCalories: 0, isLeftover: false, preWorkout: "", preWorkoutCalories: 0, postWorkout: "", postWorkoutCalories: 0, exercises: [] };
+    week[day] = {
+      isWorkoutDay: workoutDays.includes(day),
+      // Each meal section stores an array of food items: [{name, cal}]
+      morning: [], lunch: [], lunchSides: [], dinner: [], snack: [],
+      preWorkout: [], postWorkout: [],
+      // For dinner special handling
+      isLeftover: false,
+      exercises: []
+    };
   });
   return week;
 };
@@ -138,165 +132,226 @@ const formatDuration = (s) => `${Math.floor(s / 60)}:${(s % 60).toString().padSt
 const formatTime = (ts) => new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 const formatDate = (ts) => new Date(ts).toLocaleDateString([], { month: "short", day: "numeric" });
 
-const getCalorieEstimate = (text) => {
-  if (!text || text.length < 2) return { cal: 0, known: true, needsQuestion: null };
-  const lower = text.toLowerCase().trim();
+const getSectionCalories = (items) => (items || []).reduce((sum, item) => sum + (item.cal || 0), 0);
 
-  // Check food questions first (quantity/size needed)
-  for (const [keyword, qData] of Object.entries(FOOD_QUESTIONS)) {
-    if (lower.includes(keyword)) return { cal: 0, known: false, needsQuestion: { keyword, ...qData } };
-  }
-
-  // Exact match
-  for (const [key, cal] of Object.entries(CALORIE_DB)) {
-    if (lower === key.toLowerCase()) return { cal, known: true, needsQuestion: null };
-  }
-
-  // Contains match
-  for (const [key, cal] of Object.entries(CALORIE_DB)) {
-    if (lower.includes(key.toLowerCase()) || key.toLowerCase().includes(lower)) return { cal, known: true, needsQuestion: null };
-  }
-
-  // Fuzzy pattern matching
-  const patterns = [
-    { words: ["chicken", "rice"], cal: 550 }, { words: ["beef", "taco"], cal: 650 },
-    { words: ["chicken", "breast"], cal: 165 }, { words: ["ground", "beef"], cal: 280 },
-    { words: ["peanut", "butter"], cal: 190 }, { words: ["mac", "cheese"], cal: 400 },
-    { words: ["fried", "rice"], cal: 450 }, { words: ["chicken", "wing"], cal: 430 },
-    { words: ["hash", "brown"], cal: 230 }, { words: ["french", "toast"], cal: 380 },
-    { words: ["protein", "bar"], cal: 200 }, { words: ["energy", "drink"], cal: 110 },
-    { words: ["hot", "dog"], cal: 290 }, { words: ["corn", "dog"], cal: 260 },
-    { words: ["potato", "chip"], cal: 150 }, { words: ["ice", "cream"], cal: 280 },
-    { words: ["chocolate", "milk"], cal: 190 }, { words: ["fried", "chicken"], cal: 320 },
-  ];
-  for (const p of patterns) {
-    if (p.words.every(w => lower.includes(w))) return { cal: p.cal, known: false, needsQuestion: null };
-  }
-  for (const p of patterns) {
-    if (p.words.some(w => lower.includes(w))) return { cal: p.cal, known: false, needsQuestion: null };
-  }
-
-  return { cal: 0, known: false, needsQuestion: null };
+const searchFoods = (query) => {
+  if (!query || query.length < 1) return [];
+  const lower = query.toLowerCase();
+  return Object.entries(FOOD_DB)
+    .filter(([name]) => name.toLowerCase().includes(lower))
+    .slice(0, 6)
+    .map(([name, cal]) => ({ name, cal }));
 };
 
-const SmartMealInput = ({ label, valueKey, calKey, placeholder, section, dayData, updateDay, savedFoods, setSavedFoods, foodQuestions, setFoodQuestions, editModeSection, setEditModeSection, restaurantQuery, setRestaurantQuery, restaurantSuggestions, setRestaurantSuggestions }) => {
-  const val = dayData[valueKey] || "";
-  const manualCal = dayData[calKey] || 0;
-  const est = getCalorieEstimate(val);
-  const displayCal = manualCal || est.cal;
-  const needsManual = val.length > 2 && !est.known && !est.needsQuestion && !manualCal;
-  const question = foodQuestions[valueKey];
+const getQuestionForFood = (name) => {
+  const lower = name.toLowerCase();
+  for (const [keyword, q] of Object.entries(FOOD_QUESTIONS)) {
+    if (lower.includes(keyword)) return q;
+  }
+  return null;
+};
 
-  const handleChange = (newVal) => {
-    updateDay({ [valueKey]: newVal, [calKey]: 0 });
-    const newEst = getCalorieEstimate(newVal);
-    if (newEst.needsQuestion) {
-      setFoodQuestions(q => ({ ...q, [valueKey]: newEst.needsQuestion }));
+// Standalone MealSection component - outside main to prevent re-render focus loss
+const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, onSaveFood, onRemoveSaved, isEditing, onToggleEdit }) => {
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [pendingFood, setPendingFood] = useState(null); // food waiting for question answer
+  const [restaurantQuery, setRestaurantQuery] = useState("");
+  const [restaurantSuggestions, setRestaurantSuggestions] = useState([]);
+  const inputRef = useRef(null);
+
+  const totalCal = getSectionCalories(items);
+
+  const handleInput = (val) => {
+    setQuery(val);
+    if (val.length > 0) {
+      setSuggestions(searchFoods(val));
     } else {
-      setFoodQuestions(q => { const c = { ...q }; delete c[valueKey]; return c; });
+      setSuggestions([]);
     }
   };
 
-  const handleBlur = () => {
-    if (val.length > 1 && !(savedFoods[section] || []).includes(val)) {
-      setSavedFoods(sf => ({ ...sf, [section]: [...sf[section], val] }));
-    }
-  };
-
-  const removeSavedFood = (food) => setSavedFoods(sf => ({ ...sf, [section]: sf[section].filter(f => f !== food) }));
-
-  const handleRestaurantInput = (v) => {
-    setRestaurantQuery(q => ({ ...q, [valueKey]: v }));
-    if (v.length > 1) {
-      setRestaurantSuggestions(s => ({ ...s, [valueKey]: RESTAURANTS.filter(r => r.toLowerCase().includes(v.toLowerCase())).slice(0, 5) }));
+  const handleSelectFood = (name, cal) => {
+    const q = getQuestionForFood(name);
+    if (q) {
+      setPendingFood({ name, question: q });
+      setQuery("");
+      setSuggestions([]);
     } else {
-      setRestaurantSuggestions(s => ({ ...s, [valueKey]: [] }));
+      onAdd({ name, cal });
+      onSaveFood(name);
+      setQuery("");
+      setSuggestions([]);
     }
+    inputRef.current?.focus();
   };
 
-  const handleFoodAnswer = (answer, cal) => {
-    const newQ = { ...foodQuestions };
-    if (newQ[valueKey]?.type === "source" && answer === "Went out") { newQ[valueKey] = { ...newQ[valueKey], step: "restaurant" }; setFoodQuestions(newQ); return; }
-    if (newQ[valueKey]?.step === "restaurant") { newQ[valueKey] = { ...newQ[valueKey], step: "size", restaurant: answer }; setFoodQuestions(newQ); return; }
-    updateDay({ [calKey]: cal });
-    const c = { ...foodQuestions }; delete c[valueKey]; setFoodQuestions(c);
+  const handleAddCustom = () => {
+    if (!query.trim()) return;
+    const q = getQuestionForFood(query);
+    if (q) {
+      setPendingFood({ name: query, question: q });
+    } else {
+      // Unknown food - add with 0 cal flagged
+      const match = Object.entries(FOOD_DB).find(([k]) => k.toLowerCase().includes(query.toLowerCase()));
+      const cal = match ? match[1] : null;
+      onAdd({ name: query, cal: cal || 0, unknown: !cal });
+      onSaveFood(query);
+    }
+    setQuery("");
+    setSuggestions([]);
+    inputRef.current?.focus();
+  };
+
+  const handleAnswer = (opt) => {
+    if (!pendingFood) return;
+    if (pendingFood.question.type === "source" && opt === "Went out") {
+      setPendingFood({ ...pendingFood, step: "restaurant" });
+      return;
+    }
+    if (pendingFood.step === "restaurant") {
+      setPendingFood({ ...pendingFood, restaurant: opt, step: "size" });
+      return;
+    }
+    const calMatch = opt.match(/\d+/);
+    const cal = calMatch ? parseInt(calMatch[0]) : 0;
+    const name = pendingFood.restaurant ? `${pendingFood.name} from ${pendingFood.restaurant}` : pendingFood.name;
+    onAdd({ name, cal });
+    onSaveFood(name);
+    setPendingFood(null);
+    inputRef.current?.focus();
+  };
+
+  const handleRestaurantInput = (val) => {
+    setRestaurantQuery(val);
+    if (val.length > 1) {
+      setRestaurantSuggestions(RESTAURANTS.filter(r => r.toLowerCase().includes(val.toLowerCase())).slice(0, 5));
+    } else {
+      setRestaurantSuggestions([]);
+    }
   };
 
   return (
     <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff08" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+      {/* Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
         <div style={{ fontSize: "10px", color: "#e94560", letterSpacing: "0.08em" }}>{label}</div>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          {displayCal > 0 && <div style={{ fontSize: "11px", color: "#ffffff50" }}>~{displayCal} cal</div>}
-          {(savedFoods[section] || []).length > 0 && (
-            <button onClick={() => setEditModeSection(editModeSection === section ? null : section)} style={{ fontSize: "10px", color: "#ffffff30", background: "transparent", border: "none", cursor: "pointer", padding: "0" }}>
-              {editModeSection === section ? "Done" : "Edit"}
+          {totalCal > 0 && <div style={{ fontSize: "11px", color: "#ffffff50" }}>~{totalCal} cal</div>}
+          {(items.length > 0 || savedFoods.length > 0) && (
+            <button onClick={onToggleEdit} style={{ fontSize: "10px", color: "#ffffff30", background: "transparent", border: "none", cursor: "pointer", padding: "0" }}>
+              {isEditing ? "Done" : "Edit"}
             </button>
           )}
         </div>
       </div>
 
-      {(savedFoods[section] || []).length > 0 && (
+      {/* Added food items */}
+      {items.length > 0 && (
         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
-          {(savedFoods[section] || []).map(food => (
-            <button key={food} onClick={() => editModeSection === section ? removeSavedFood(food) : handleChange(food)}
-              style={{ padding: "5px 10px", borderRadius: "12px", border: val === food ? "1px solid #e94560" : editModeSection === section ? "1px solid #e9456060" : "1px solid #ffffff15", background: val === food ? "#e9456015" : "transparent", color: val === food ? "#e94560" : editModeSection === section ? "#e9456080" : "#ffffff60", fontSize: "11px", fontFamily: "inherit", cursor: "pointer" }}>
-              {editModeSection === section && <span style={{ marginRight: "4px" }}>×</span>}{food}
+          {items.map((item, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: "4px", padding: "4px 10px", borderRadius: "12px", background: "#e9456015", border: "1px solid #e9456040" }}>
+              <span style={{ fontSize: "12px", color: "#fff" }}>{item.name}</span>
+              {item.cal > 0 && <span style={{ fontSize: "10px", color: "#ffffff50" }}>~{item.cal}</span>}
+              {item.unknown && <span style={{ fontSize: "10px", color: "#f5a623" }}>⚠️</span>}
+              <button onClick={() => onRemove(i)} style={{ background: "transparent", border: "none", color: "#ffffff50", cursor: "pointer", fontSize: "14px", padding: "0 0 0 2px", lineHeight: 1 }}>×</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Saved food bubbles */}
+      {savedFoods.length > 0 && (
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
+          {savedFoods.map(food => (
+            <button key={food} onClick={() => isEditing ? onRemoveSaved(food) : handleSelectFood(food, FOOD_DB[food] || 0)}
+              style={{ padding: "4px 10px", borderRadius: "12px", border: "1px solid #ffffff15", background: isEditing ? "#e9456008" : "transparent", color: isEditing ? "#e9456060" : "#ffffff50", fontSize: "11px", fontFamily: "inherit", cursor: "pointer" }}>
+              {isEditing && "× "}{food}
             </button>
           ))}
         </div>
       )}
 
-      <input placeholder={placeholder} value={val} onChange={e => handleChange(e.target.value)} onBlur={handleBlur}
-        style={{ width: "100%", background: "#1a1a1a", border: `1px solid ${needsManual ? "#f5a62360" : "#ffffff15"}`, borderRadius: "8px", padding: "10px 12px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box" }} />
+      {/* Search input */}
+      {!pendingFood && (
+        <div style={{ display: "flex", gap: "8px" }}>
+          <input
+            ref={inputRef}
+            placeholder={`Add ${label.toLowerCase()} item...`}
+            value={query}
+            onChange={e => handleInput(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && handleAddCustom()}
+            style={{ flex: 1, background: "#1a1a1a", border: "1px solid #ffffff15", borderRadius: "8px", padding: "8px 12px", color: "#fff", fontSize: "16px", fontFamily: "inherit" }}
+          />
+          {query.length > 0 && (
+            <button onClick={handleAddCustom} style={{ padding: "8px 14px", borderRadius: "8px", border: "none", background: "#e94560", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", fontWeight: "600" }}>Add</button>
+          )}
+        </div>
+      )}
 
-      {question && (
-        <div style={{ marginTop: "8px", background: "#1a1a1a", borderRadius: "8px", border: "1px solid #4ecdc430", padding: "12px" }}>
-          {question.step === "restaurant" ? (
+      {/* Search suggestions */}
+      {suggestions.length > 0 && !pendingFood && (
+        <div style={{ marginTop: "6px", background: "#1a1a1a", borderRadius: "8px", border: "1px solid #ffffff10", overflow: "hidden" }}>
+          {suggestions.map(s => (
+            <button key={s.name} onClick={() => handleSelectFood(s.name, s.cal)}
+              style={{ display: "flex", justifyContent: "space-between", width: "100%", padding: "10px 12px", background: "transparent", border: "none", borderBottom: "1px solid #ffffff08", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
+              <span>{s.name}</span>
+              <span style={{ color: "#ffffff40", fontSize: "11px" }}>~{s.cal} cal</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Smart questions */}
+      {pendingFood && (
+        <div style={{ background: "#1a1a1a", borderRadius: "8px", border: "1px solid #4ecdc430", padding: "12px" }}>
+          <div style={{ fontSize: "12px", color: "#fff", marginBottom: "8px" }}>{pendingFood.name}</div>
+          {pendingFood.step === "restaurant" ? (
             <>
               <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>Where did you go?</div>
-              <input placeholder="Type restaurant name..." value={restaurantQuery[valueKey] || ""} onChange={e => handleRestaurantInput(e.target.value)}
+              <input placeholder="Type restaurant..." value={restaurantQuery} onChange={e => handleRestaurantInput(e.target.value)}
                 style={{ width: "100%", background: "#111", border: "1px solid #ffffff15", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box", marginBottom: "6px" }} />
-              {(restaurantSuggestions[valueKey] || []).map(r => (
-                <button key={r} onClick={() => { handleFoodAnswer(r, 0); updateDay({ [valueKey]: `${val} from ${r}` }); setRestaurantQuery(q => ({ ...q, [valueKey]: "" })); setRestaurantSuggestions(s => ({ ...s, [valueKey]: [] })); }}
+              {restaurantSuggestions.map(r => (
+                <button key={r} onClick={() => { setPendingFood({ ...pendingFood, restaurant: r, step: "size" }); setRestaurantQuery(""); setRestaurantSuggestions([]); }}
                   style={{ display: "block", width: "100%", padding: "8px 10px", background: "transparent", border: "1px solid #ffffff15", borderRadius: "6px", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", textAlign: "left", marginBottom: "4px" }}>{r}</button>
               ))}
-              {restaurantQuery[valueKey]?.length > 1 && !(restaurantSuggestions[valueKey] || []).length && (
-                <button onClick={() => { handleFoodAnswer(restaurantQuery[valueKey], 0); updateDay({ [valueKey]: `${val} from ${restaurantQuery[valueKey]}` }); setRestaurantQuery(q => ({ ...q, [valueKey]: "" })); }}
+              {restaurantQuery.length > 1 && !restaurantSuggestions.length && (
+                <button onClick={() => { setPendingFood({ ...pendingFood, restaurant: restaurantQuery, step: "size" }); setRestaurantQuery(""); }}
                   style={{ display: "block", width: "100%", padding: "8px 10px", background: "#4ecdc415", border: "1px solid #4ecdc440", borderRadius: "6px", color: "#4ecdc4", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
-                  Use "{restaurantQuery[valueKey]}"
+                  Use "{restaurantQuery}"
                 </button>
               )}
-              <div style={{ fontSize: "10px", color: "#ffffff30", marginTop: "8px" }}>Pick a size:</div>
-              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "6px" }}>
-                {["Small (~380 cal)", "Medium (~540 cal)", "Large (~720 cal)"].map(opt => {
-                  const cal = parseInt(opt.match(/\d+/)[0]);
-                  return <button key={opt} onClick={() => { updateDay({ [calKey]: cal }); const c = { ...foodQuestions }; delete c[valueKey]; setFoodQuestions(c); }} style={{ padding: "6px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>;
-                })}
+            </>
+          ) : pendingFood.step === "size" ? (
+            <>
+              <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>What size?</div>
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                {["Small (~380 cal)", "Medium (~540 cal)", "Large (~720 cal)"].map(opt => (
+                  <button key={opt} onClick={() => handleAnswer(opt)}
+                    style={{ padding: "6px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>
+                ))}
               </div>
             </>
           ) : (
             <>
               <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>
-                {question.type === "size" ? "What size?" : question.type === "source" ? "Homemade or went out?" : "How many?"}
+                {pendingFood.question.type === "quantity" ? "How many?" : pendingFood.question.type === "source" ? "Homemade or went out?" : "What size?"}
               </div>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                {question.options.map(opt => {
-                  const cal = parseInt((opt.match(/\d+/) || [0])[0]);
-                  return <button key={opt} onClick={() => handleFoodAnswer(opt, cal)} style={{ padding: "6px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>;
-                })}
+                {pendingFood.question.options.map(opt => (
+                  <button key={opt} onClick={() => handleAnswer(opt)}
+                    style={{ padding: "6px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>
+                ))}
               </div>
             </>
           )}
+          <button onClick={() => setPendingFood(null)} style={{ marginTop: "8px", fontSize: "11px", color: "#ffffff30", background: "transparent", border: "none", cursor: "pointer", padding: "0" }}>Cancel</button>
         </div>
       )}
 
-      {needsManual && (
-        <div style={{ marginTop: "8px" }}>
-          <div style={{ fontSize: "11px", color: "#f5a623", marginBottom: "4px" }}>⚠️ Calories unknown — enter manually:</div>
-          <input placeholder="Enter calories" type="number" value={manualCal || ""} onChange={e => updateDay({ [calKey]: parseInt(e.target.value) || 0 })}
-            style={{ width: "100%", background: "#1a1a1a", border: "1px solid #f5a62360", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box" }} />
-        </div>
+      {/* Unknown calorie flag */}
+      {items.some(i => i.unknown) && (
+        <div style={{ marginTop: "6px", fontSize: "11px", color: "#f5a623" }}>⚠️ Some items have unknown calories — calorie count may be off</div>
       )}
     </div>
   );
@@ -314,13 +369,22 @@ export default function FitnessTracker() {
   const [templateName, setTemplateName] = useState("");
   const [showLoadTemplate, setShowLoadTemplate] = useState(false);
   const [expandedRecipe, setExpandedRecipe] = useState(null);
-  const [savedFoods, setSavedFoods] = useState({ morning: [], lunch: [], dinner: [], preWorkout: [], postWorkout: [] });
-  const [editModeSection, setEditModeSection] = useState(null);
-  const [foodQuestions, setFoodQuestions] = useState({});
-  const [restaurantQuery, setRestaurantQuery] = useState({});
-  const [restaurantSuggestions, setRestaurantSuggestions] = useState({});
+  const [savedFoods, setSavedFoods] = useState({ morning: [], lunch: [], dinner: [], snack: [], preWorkout: [], postWorkout: [] });
+  const [editingSection, setEditingSection] = useState(null);
 
-  const [workoutActive, setWorkoutActive] = useState(false);
+  const [onboardingStep, setOnboardingStep] = useState(0);
+  const [onboardingDone, setOnboardingDone] = useState(false);
+
+  const ONBOARDING_STEPS = [
+    { tab: "meals", icon: "🍽️", title: "Meal Planner", desc: "Log everything you eat throughout the day. Type any food and the app will estimate calories automatically. If it doesn't recognize something it'll ask you to enter calories manually. Your saved meals appear as quick-tap bubbles so you don't retype the same things daily." },
+    { tab: "workout", icon: "🏋️", title: "Workout Tracker", desc: "Hit Start Workout to begin a timed session. Add exercises with sets, reps and weight — or cardio with duration and distance. Save your workout as a template and load it next week so you're not rebuilding from scratch every session." },
+    { tab: "progress", icon: "📈", title: "Progress", desc: "Track your body weight over time and see your personal records for each exercise. The app will prompt you to log your weight every 20 workouts so you can see how far you've come." },
+    { tab: "history", icon: "📋", title: "History", desc: "Every completed workout is saved here with the date, duration and exercises you did. Use it to see how consistent you've been over time." },
+    { tab: "settings", icon: "⚙️", title: "Settings", desc: "Set your name, goal weight, daily calorie and protein targets. Track body measurements like arms and chest — sometimes the scale doesn't move but your body is still changing. You can also manage your saved foods and reset data here." },
+  ];
+
+  const currentStep = ONBOARDING_STEPS[onboardingStep];
+
   const [workoutStart, setWorkoutStart] = useState(null);
   const [elapsed, setElapsed] = useState(0);
   const timerRef = useRef(null);
@@ -342,58 +406,43 @@ export default function FitnessTracker() {
   const day = week[activeDay];
   const updateDay = (fields) => setWeek(w => ({ ...w, [activeDay]: { ...w[activeDay], ...fields } }));
 
+  const addFoodItem = (section, item) => {
+    const current = day[section] || [];
+    updateDay({ [section]: [...current, item] });
+  };
+
+  const removeFoodItem = (section, index) => {
+    const current = [...(day[section] || [])];
+    current.splice(index, 1);
+    updateDay({ [section]: current });
+  };
+
+  const addSavedFood = (section, name) => {
+    if (!name || name.length < 2) return;
+    setSavedFoods(sf => ({ ...sf, [section]: sf[section].includes(name) ? sf[section] : [...sf[section], name] }));
+  };
+
+  const removeSavedFood = (section, name) => {
+    setSavedFoods(sf => ({ ...sf, [section]: sf[section].filter(f => f !== name) }));
+  };
+
   const toggleLunchSide = (side) => {
     const current = day.lunchSides || [];
-    updateDay({ lunchSides: current.includes(side) ? current.filter(s => s !== side) : [...current, side] });
-  };
-
-  const saveFoodItem = (section, food) => {
-    if (!food || food.length < 2) return;
-    setSavedFoods(sf => ({ ...sf, [section]: sf[section].includes(food) ? sf[section] : [...sf[section], food] }));
-  };
-
-  const removeSavedFood = (section, food) => {
-    setSavedFoods(sf => ({ ...sf, [section]: sf[section].filter(f => f !== food) }));
-  };
-
-  const handleRestaurantInput = (key, val) => {
-    setRestaurantQuery(q => ({ ...q, [key]: val }));
-    if (val.length > 1) {
-      const matches = RESTAURANTS.filter(r => r.toLowerCase().includes(val.toLowerCase()));
-      setRestaurantSuggestions(s => ({ ...s, [key]: matches.slice(0, 5) }));
+    const cal = FOOD_DB[side] || 0;
+    if (current.includes(side)) {
+      updateDay({ lunchSides: current.filter(s => s !== side) });
     } else {
-      setRestaurantSuggestions(s => ({ ...s, [key]: [] }));
+      updateDay({ lunchSides: [...current, side] });
     }
-  };
-
-  const handleFoodAnswer = (mealKey, calKey, answer, cal) => {
-    const newQ = { ...foodQuestions };
-    if (newQ[mealKey]?.type === "source" && answer === "Went out") {
-      newQ[mealKey] = { ...newQ[mealKey], step: "restaurant" };
-      setFoodQuestions(newQ);
-      return;
-    }
-    if (newQ[mealKey]?.step === "restaurant") {
-      newQ[mealKey] = { ...newQ[mealKey], step: "size", restaurant: answer };
-      setFoodQuestions(newQ);
-      return;
-    }
-    updateDay({ [calKey]: cal });
-    saveFoodItem(mealKey.replace("Calories", ""), week[activeDay][mealKey.replace("Calories", "")]);
-    const cleared = { ...foodQuestions };
-    delete cleared[mealKey];
-    setFoodQuestions(cleared);
   };
 
   const getDayCalories = (d) => {
     const dd = week[d];
     let cal = 0;
-    cal += dd.morningCalories || getCalorieEstimate(dd.morning).cal;
-    cal += CALORIE_DB[dd.lunch] || dd.lunchCalories || 0;
-    (dd.lunchSides || []).forEach(s => { cal += CALORIE_DB[s] || 0; });
-    cal += dd.dinnerCalories || getCalorieEstimate(dd.dinner).cal;
-    cal += dd.preWorkoutCalories || getCalorieEstimate(dd.preWorkout).cal;
-    cal += dd.postWorkoutCalories || getCalorieEstimate(dd.postWorkout).cal;
+    ["morning", "lunch", "dinner", "snack", "preWorkout", "postWorkout"].forEach(s => {
+      cal += getSectionCalories(dd[s] || []);
+    });
+    (dd.lunchSides || []).forEach(s => { cal += FOOD_DB[s] || 0; });
     return cal;
   };
 
@@ -446,28 +495,40 @@ export default function FitnessTracker() {
     const last = workoutHistory.find(s => s.day === activeDay);
     if (last) updateDay({ exercises: last.exercises.map(ex => ({ ...ex, id: Date.now() + Math.random() })) });
   };
-  const totalVolume = (ex) => (ex.sets || []).reduce((acc, s) => acc + (parseFloat(s.reps) || 0) * (parseFloat(s.weight) || 0), 0);
 
   const currentWeight = bodyWeights.length > 0 ? bodyWeights[bodyWeights.length - 1]?.weight : settings.startingWeight || "—";
   const startWeight = bodyWeights.length > 0 ? bodyWeights[0]?.weight : settings.startingWeight || "—";
   const weightGain = bodyWeights.length > 1 ? (currentWeight - startWeight).toFixed(1) : "0";
 
-  const navBtn = (label, v) => (
-    <button onClick={() => setView(v)} style={{ flex: 1, padding: "8px 2px", border: "none", background: view === v ? "linear-gradient(135deg, #e94560, #f5a623)" : "transparent", color: view === v ? "#fff" : "#ffffff50", fontSize: "9px", fontFamily: "inherit", cursor: "pointer", letterSpacing: "0.06em", borderRadius: "8px", fontWeight: view === v ? "700" : "400" }}>{label}</button>
-  );
+  const navBtn = (label, v) => {
+    const isOnboarding = !onboardingDone && currentStep?.tab === v;
+    return (
+      <button onClick={() => setView(v)} style={{ flex: 1, padding: "8px 2px", border: isOnboarding ? "1px solid #e94560" : "none", background: view === v ? "linear-gradient(135deg, #e94560, #f5a623)" : isOnboarding ? "#e9456015" : "transparent", color: view === v || isOnboarding ? "#fff" : "#ffffff50", fontSize: "9px", fontFamily: "inherit", cursor: "pointer", letterSpacing: "0.06em", borderRadius: "8px", fontWeight: view === v ? "700" : "400" }}>{label}</button>
+    );
+  };
+
+  const mealProps = (section) => ({
+    sectionKey: section,
+    items: day[section] || [],
+    onAdd: (item) => addFoodItem(section, item),
+    onRemove: (i) => removeFoodItem(section, i),
+    savedFoods: savedFoods[section] || [],
+    onSaveFood: (name) => addSavedFood(section, name),
+    onRemoveSaved: (name) => removeSavedFood(section, name),
+    isEditing: editingSection === section,
+    onToggleEdit: () => setEditingSection(editingSection === section ? null : section),
+  });
 
   return (
     <div style={{ minHeight: "100vh", background: "#0a0a0a", color: "#f0f0f0", fontFamily: "'DM Mono', 'Courier New', monospace" }}>
 
       {/* Header */}
       <div style={{ background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)", padding: "18px 20px 14px", borderBottom: "1px solid #ffffff15" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <img src="/icon-192.png" alt="logo" style={{ width: "34px", height: "34px", borderRadius: "8px", objectFit: "cover" }} />
-            <div>
-              <div style={{ fontSize: "15px", fontWeight: "700", letterSpacing: "0.05em", color: "#fff" }}>FITNESS TRACKER</div>
-              <div style={{ fontSize: "10px", color: "#ffffff60" }}>{currentWeight} lbs · {totalWorkouts} workouts · 🔥 {streak} streak</div>
-            </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <div style={{ width: "34px", height: "34px", borderRadius: "8px", background: "linear-gradient(135deg, #e94560, #f5a623)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", fontWeight: "bold", color: "#fff" }}>💪</div>
+          <div>
+            <div style={{ fontSize: "15px", fontWeight: "700", letterSpacing: "0.05em", color: "#fff" }}>FITNESS TRACKER</div>
+            <div style={{ fontSize: "10px", color: "#ffffff60" }}>{currentWeight} lbs · {totalWorkouts} workouts · 🔥 {streak} streak</div>
           </div>
         </div>
       </div>
@@ -481,12 +542,66 @@ export default function FitnessTracker() {
         {navBtn("SETTINGS", "settings")}
       </div>
 
-      {/* Weight prompt */}
+      {/* Onboarding walkthrough */}
+      {!onboardingDone && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 200 }}>
+          {/* Dim overlay */}
+          <div style={{ position: "absolute", inset: 0, background: "#000000bb" }} />
+
+          {/* Highlight active tab */}
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "130px", background: "transparent" }} />
+
+          {/* Card */}
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "#1a1a1a", borderRadius: "20px 20px 0 0", border: "1px solid #ffffff15", padding: "24px 20px 40px" }}>
+
+            {/* Progress dots */}
+            <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginBottom: "20px" }}>
+              {ONBOARDING_STEPS.map((_, i) => (
+                <div key={i} style={{ width: i === onboardingStep ? "20px" : "6px", height: "6px", borderRadius: "3px", background: i === onboardingStep ? "#e94560" : "#ffffff20", transition: "all 0.3s" }} />
+              ))}
+            </div>
+
+            {/* Content */}
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
+              <div style={{ width: "44px", height: "44px", borderRadius: "12px", background: "linear-gradient(135deg, #e94560, #f5a623)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px", flexShrink: 0 }}>
+                {currentStep.icon}
+              </div>
+              <div style={{ fontSize: "18px", fontWeight: "700", color: "#fff" }}>{currentStep.title}</div>
+            </div>
+
+            <div style={{ fontSize: "14px", color: "#ffffff80", lineHeight: "1.7", marginBottom: "24px" }}>
+              {currentStep.desc}
+            </div>
+
+            {/* Buttons */}
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button onClick={() => setOnboardingDone(true)} style={{ flex: 1, padding: "12px", borderRadius: "10px", border: "1px solid #ffffff20", background: "transparent", color: "#ffffff50", fontSize: "13px", fontFamily: "inherit", cursor: "pointer" }}>
+                Skip
+              </button>
+              <button onClick={() => {
+                if (onboardingStep < ONBOARDING_STEPS.length - 1) {
+                  setView(ONBOARDING_STEPS[onboardingStep + 1].tab);
+                  setOnboardingStep(s => s + 1);
+                } else {
+                  setOnboardingDone(true);
+                  setView("meals");
+                }
+              }} style={{ flex: 2, padding: "12px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #e94560, #f5a623)", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", fontWeight: "700" }}>
+                {onboardingStep < ONBOARDING_STEPS.length - 1 ? "Next →" : "Get Started 💪"}
+              </button>
+            </div>
+
+            {/* Step counter */}
+            <div style={{ textAlign: "center", fontSize: "10px", color: "#ffffff30", marginTop: "12px" }}>
+              {onboardingStep + 1} of {ONBOARDING_STEPS.length}
+            </div>
+          </div>
+        </div>
+      )}
       {showWeightPrompt && (
         <div style={{ position: "fixed", inset: 0, background: "#000000cc", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: "20px" }}>
           <div style={{ background: "#1a1a1a", borderRadius: "16px", border: "1px solid #f5a62340", padding: "24px", width: "100%", maxWidth: "320px" }}>
             <div style={{ fontSize: "14px", fontWeight: "700", color: "#f5a623", marginBottom: "8px" }}>⚖️ LOG YOUR WEIGHT</div>
-            <div style={{ fontSize: "11px", color: "#ffffff60", marginBottom: "16px" }}>Start: {startWeight} lbs · Current: {currentWeight} lbs</div>
             <input placeholder="Current weight (lbs)" value={newBodyWeight} onChange={e => setNewBodyWeight(e.target.value)} type="number"
               style={{ width: "100%", background: "#111", border: "1px solid #ffffff20", borderRadius: "8px", padding: "12px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box", marginBottom: "12px" }} />
             <div style={{ display: "flex", gap: "8px" }}>
@@ -510,16 +625,12 @@ export default function FitnessTracker() {
             </div>
             <div style={{ marginBottom: "16px" }}>
               <div style={{ fontSize: "11px", color: "#e94560", letterSpacing: "0.08em", marginBottom: "8px" }}>INGREDIENTS</div>
-              {expandedRecipe.ingredients.map((ing, i) => (
-                <div key={i} style={{ fontSize: "13px", color: "#ffffff80", padding: "6px 0", borderBottom: "1px solid #ffffff08" }}>• {ing}</div>
-              ))}
+              {expandedRecipe.ingredients.map((ing, i) => <div key={i} style={{ fontSize: "13px", color: "#ffffff80", padding: "6px 0", borderBottom: "1px solid #ffffff08" }}>• {ing}</div>)}
             </div>
             <div style={{ marginBottom: "16px" }}>
               <div style={{ fontSize: "11px", color: "#e94560", letterSpacing: "0.08em", marginBottom: "8px" }}>SEASONINGS</div>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                {expandedRecipe.seasonings.map((s, i) => (
-                  <div key={i} style={{ padding: "4px 10px", borderRadius: "8px", background: "#111", border: "1px solid #ffffff10", fontSize: "12px", color: "#f5a623" }}>{s}</div>
-                ))}
+                {expandedRecipe.seasonings.map((s, i) => <div key={i} style={{ padding: "4px 10px", borderRadius: "8px", background: "#111", border: "1px solid #ffffff10", fontSize: "12px", color: "#f5a623" }}>{s}</div>)}
               </div>
             </div>
             <div style={{ marginBottom: "16px" }}>
@@ -531,8 +642,10 @@ export default function FitnessTracker() {
                 </div>
               ))}
             </div>
-            <button onClick={() => { updateDay({ dinner: expandedRecipe.name, dinnerCalories: expandedRecipe.calories, isLeftover: false }); setExpandedRecipe(null); }}
-              style={{ width: "100%", padding: "14px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #e94560, #f5a623)", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", fontWeight: "700", marginBottom: "32px" }}>
+            <button onClick={() => {
+              addFoodItem("dinner", { name: expandedRecipe.name, cal: expandedRecipe.calories });
+              setExpandedRecipe(null);
+            }} style={{ width: "100%", padding: "14px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #e94560, #f5a623)", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", fontWeight: "700", marginBottom: "32px" }}>
               Add to {activeDay}'s Dinner
             </button>
           </div>
@@ -542,6 +655,7 @@ export default function FitnessTracker() {
       {/* ── MEALS VIEW ── */}
       {view === "meals" && (
         <div style={{ padding: "16px" }}>
+          {/* Day selector */}
           <div style={{ display: "flex", overflowX: "auto", gap: "8px", marginBottom: "16px", scrollbarWidth: "none" }}>
             {DAYS.map(d => (
               <button key={d} onClick={() => setActiveDay(d)} style={{ flexShrink: 0, padding: "7px 12px", borderRadius: "20px", border: activeDay === d ? "1px solid #e94560" : "1px solid #ffffff15", background: activeDay === d ? "#e9456015" : "transparent", color: activeDay === d ? "#e94560" : week[d].isWorkoutDay ? "#f5a623" : "#ffffff50", fontSize: "11px", fontFamily: "inherit", cursor: "pointer" }}>{d.slice(0, 3).toUpperCase()}</button>
@@ -563,21 +677,23 @@ export default function FitnessTracker() {
           <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", marginBottom: "16px", overflow: "hidden" }}>
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff10", fontSize: "11px", letterSpacing: "0.12em", color: "#ffffff60" }}>NUTRITION — {activeDay.toUpperCase()}</div>
 
-            <SmartMealInput label="BREAKFAST" valueKey="morning" calKey="morningCalories" placeholder="What did you eat for breakfast?" section="morning" dayData={day} updateDay={updateDay} savedFoods={savedFoods} setSavedFoods={setSavedFoods} foodQuestions={foodQuestions} setFoodQuestions={setFoodQuestions} editModeSection={editModeSection} setEditModeSection={setEditModeSection} restaurantQuery={restaurantQuery} setRestaurantQuery={setRestaurantQuery} restaurantSuggestions={restaurantSuggestions} setRestaurantSuggestions={setRestaurantSuggestions} />
+            <MealSection label="BREAKFAST" {...mealProps("morning")} />
 
             {/* Lunch */}
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff08" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
                 <div style={{ fontSize: "10px", color: "#e94560", letterSpacing: "0.08em" }}>LUNCH</div>
-                <div style={{ fontSize: "11px", color: "#ffffff40" }}>{(CALORIE_DB[day.lunch] || day.lunchCalories || 0) + (day.lunchSides || []).reduce((a, s) => a + (CALORIE_DB[s] || 0), 0)} cal</div>
+                <div style={{ fontSize: "11px", color: "#ffffff40" }}>{getSectionCalories(day.lunch) + (day.lunchSides || []).reduce((a, s) => a + (FOOD_DB[s] || 0), 0)} cal</div>
               </div>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
                 {LUNCH_OPTIONS.map(opt => (
-                  <button key={opt} onClick={() => updateDay({ lunch: day.lunch === opt ? "" : opt, lunchCustom: "", lunchCalories: 0 })} style={{ padding: "6px 10px", borderRadius: "12px", border: day.lunch === opt ? "1px solid #e94560" : "1px solid #ffffff15", background: day.lunch === opt ? "#e9456015" : "transparent", color: day.lunch === opt ? "#e94560" : "#ffffff50", fontSize: "11px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>
+                  <button key={opt} onClick={() => {
+                    const exists = (day.lunch || []).find(i => i.name === opt);
+                    if (exists) updateDay({ lunch: (day.lunch || []).filter(i => i.name !== opt) });
+                    else addFoodItem("lunch", { name: opt, cal: FOOD_DB[opt] || 0 });
+                  }} style={{ padding: "6px 10px", borderRadius: "12px", border: (day.lunch || []).find(i => i.name === opt) ? "1px solid #e94560" : "1px solid #ffffff15", background: (day.lunch || []).find(i => i.name === opt) ? "#e9456015" : "transparent", color: (day.lunch || []).find(i => i.name === opt) ? "#e94560" : "#ffffff50", fontSize: "11px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>
                 ))}
               </div>
-              <input placeholder="What did you eat for lunch?" value={day.lunchCustom || ""} onChange={e => updateDay({ lunchCustom: e.target.value, lunch: "" })}
-                style={{ width: "100%", background: "#1a1a1a", border: "1px solid #ffffff15", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box", marginBottom: "8px" }} />
               <div style={{ fontSize: "10px", color: "#ffffff30", marginBottom: "6px" }}>SIDES</div>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                 {LUNCH_SIDES.map(side => (
@@ -592,27 +708,37 @@ export default function FitnessTracker() {
                 <div style={{ fontSize: "10px", color: "#e94560", letterSpacing: "0.08em" }}>DINNER</div>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                   <button onClick={() => updateDay({ isLeftover: !day.isLeftover })} style={{ padding: "4px 10px", borderRadius: "10px", border: day.isLeftover ? "1px solid #4ecdc4" : "1px solid #ffffff15", background: day.isLeftover ? "#4ecdc415" : "transparent", color: day.isLeftover ? "#4ecdc4" : "#ffffff40", fontSize: "10px", fontFamily: "inherit", cursor: "pointer" }}>🍱 Leftovers</button>
-                  <div style={{ fontSize: "11px", color: "#ffffff40" }}>{CALORIE_DB[day.dinner] || day.dinnerCalories || 0} cal</div>
+                  <div style={{ fontSize: "11px", color: "#ffffff40" }}>{getSectionCalories(day.dinner)} cal</div>
                 </div>
               </div>
               {day.isLeftover ? (
                 <div style={{ padding: "12px", borderRadius: "8px", background: "#4ecdc410", border: "1px solid #4ecdc430", fontSize: "13px", color: "#4ecdc4" }}>🍱 Leftover day — no cooking needed!</div>
               ) : (
                 <>
-                  <input placeholder="What did you eat for dinner?" value={day.dinner} onChange={e => updateDay({ dinner: e.target.value, dinnerCalories: 0 })}
-                    style={{ width: "100%", background: "#1a1a1a", border: "1px solid #ffffff15", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box", marginBottom: "10px" }} />
+                  {(day.dinner || []).length > 0 && (
+                    <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
+                      {(day.dinner || []).map((item, i) => (
+                        <div key={i} style={{ display: "flex", alignItems: "center", gap: "4px", padding: "4px 10px", borderRadius: "12px", background: "#e9456015", border: "1px solid #e9456040" }}>
+                          <span style={{ fontSize: "12px", color: "#fff" }}>{item.name}</span>
+                          {item.cal > 0 && <span style={{ fontSize: "10px", color: "#ffffff50" }}>~{item.cal}</span>}
+                          <button onClick={() => removeFoodItem("dinner", i)} style={{ background: "transparent", border: "none", color: "#ffffff50", cursor: "pointer", fontSize: "14px", padding: "0 0 0 2px" }}>×</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   <div style={{ fontSize: "10px", color: "#ffffff30", marginBottom: "8px" }}>SUGGESTED — tap to see recipe</div>
                   <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                     {DINNER_RECIPES.map(r => (
-                      <button key={r.name} onClick={() => setExpandedRecipe(r)} style={{ padding: "6px 10px", borderRadius: "12px", border: day.dinner === r.name ? "1px solid #f5a623" : "1px solid #ffffff15", background: day.dinner === r.name ? "#f5a62310" : "transparent", color: day.dinner === r.name ? "#f5a623" : "#ffffff50", fontSize: "11px", fontFamily: "inherit", cursor: "pointer" }}>{r.emoji} {r.name}</button>
+                      <button key={r.name} onClick={() => setExpandedRecipe(r)} style={{ padding: "6px 10px", borderRadius: "12px", border: "1px solid #ffffff15", background: "transparent", color: "#ffffff50", fontSize: "11px", fontFamily: "inherit", cursor: "pointer" }}>{r.emoji} {r.name}</button>
                     ))}
                   </div>
                 </>
               )}
             </div>
 
-            <SmartMealInput label="PRE-WORKOUT" valueKey="preWorkout" calKey="preWorkoutCalories" placeholder="What do you eat before working out?" section="preWorkout" dayData={day} updateDay={updateDay} savedFoods={savedFoods} setSavedFoods={setSavedFoods} foodQuestions={foodQuestions} setFoodQuestions={setFoodQuestions} editModeSection={editModeSection} setEditModeSection={setEditModeSection} restaurantQuery={restaurantQuery} setRestaurantQuery={setRestaurantQuery} restaurantSuggestions={restaurantSuggestions} setRestaurantSuggestions={setRestaurantSuggestions} />
-            <SmartMealInput label="POST-WORKOUT" valueKey="postWorkout" calKey="postWorkoutCalories" placeholder="What do you eat after working out?" section="postWorkout" dayData={day} updateDay={updateDay} savedFoods={savedFoods} setSavedFoods={setSavedFoods} foodQuestions={foodQuestions} setFoodQuestions={setFoodQuestions} editModeSection={editModeSection} setEditModeSection={setEditModeSection} restaurantQuery={restaurantQuery} setRestaurantQuery={setRestaurantQuery} restaurantSuggestions={restaurantSuggestions} setRestaurantSuggestions={setRestaurantSuggestions} />
+            <MealSection label="SNACK" {...mealProps("snack")} />
+            <MealSection label="PRE-WORKOUT" {...mealProps("preWorkout")} />
+            <MealSection label="POST-WORKOUT" {...mealProps("postWorkout")} />
           </div>
 
           <div style={{ padding: "12px 16px", borderRadius: "12px", background: "linear-gradient(135deg, #e9456008, #f5a62308)", border: "1px solid #f5a62320" }}>
@@ -813,7 +939,7 @@ export default function FitnessTracker() {
             </div>
             <div style={{ padding: "16px" }}>
               <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "16px" }}>
-                {[{ l: "START", v: `${startWeight} lbs`, c: "#ffffff60" }, { l: "NOW", v: `${currentWeight} lbs`, c: "#4ecdc4" }, { l: "GOAL", v: `${settings.goalWeight} lbs`, c: "#f5a623" }].map(s => (
+                {[{ l: "START", v: `${startWeight} lbs`, c: "#ffffff60" }, { l: "NOW", v: `${currentWeight} lbs`, c: "#4ecdc4" }, { l: "GOAL", v: `${settings.goalWeight || "—"} lbs`, c: "#f5a623" }].map(s => (
                   <div key={s.l} style={{ textAlign: "center" }}>
                     <div style={{ fontSize: "18px", fontWeight: "700", color: s.c }}>{s.v}</div>
                     <div style={{ fontSize: "10px", color: "#ffffff30" }}>{s.l}</div>
@@ -835,7 +961,7 @@ export default function FitnessTracker() {
                   })}
                 </div>
               ) : (
-                <div style={{ textAlign: "center", color: "#ffffff30", fontSize: "12px", padding: "12px 0" }}>Log weight after workouts to see your chart</div>
+                <div style={{ textAlign: "center", color: "#ffffff30", fontSize: "12px", padding: "12px 0" }}>Log weight to see your chart</div>
               )}
             </div>
           </div>
@@ -904,8 +1030,6 @@ export default function FitnessTracker() {
       {/* ── SETTINGS VIEW ── */}
       {view === "settings" && (
         <div style={{ padding: "16px" }}>
-
-          {/* Profile */}
           <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", marginBottom: "16px", overflow: "hidden" }}>
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff10", fontSize: "11px", letterSpacing: "0.12em", color: "#ffffff60" }}>PROFILE</div>
             {[
@@ -921,24 +1045,31 @@ export default function FitnessTracker() {
             ))}
           </div>
 
-          {/* Goals */}
           <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", marginBottom: "16px", overflow: "hidden" }}>
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff10", fontSize: "11px", letterSpacing: "0.12em", color: "#ffffff60" }}>GOALS</div>
             {[
-              { label: "Starting Weight (lbs)", key: "startingWeight", type: "number", placeholder: "e.g. 165" },
-              { label: "Goal Weight (lbs)", key: "goalWeight", type: "number", placeholder: "e.g. 185" },
-              { label: "Daily Calorie Goal", key: "calorieGoal", type: "number", placeholder: "e.g. 3000" },
-              { label: "Daily Protein Goal (g)", key: "proteinGoal", type: "number", placeholder: "e.g. 150" },
+              { label: "Starting Weight (lbs)", key: "startingWeight", placeholder: "e.g. 165" },
+              { label: "Goal Weight (lbs)", key: "goalWeight", placeholder: "e.g. 185" },
+              { label: "Daily Calorie Goal", key: "calorieGoal", placeholder: "e.g. 3000" },
+              { label: "Daily Protein Goal (g)", key: "proteinGoal", placeholder: "e.g. 150" },
             ].map(f => (
               <div key={f.key} style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff08", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div style={{ fontSize: "13px", color: "#ffffff80" }}>{f.label}</div>
-                <input value={settings[f.key] || ""} onChange={e => setSettings(s => ({ ...s, [f.key]: parseFloat(e.target.value) || 0 }))} type="number" placeholder={f.placeholder || ""}
-                  style={{ background: "#1a1a1a", border: "1px solid #ffffff15", borderRadius: "8px", padding: "6px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit", width: "100px", textAlign: "right" }} />
+                <input value={settings[f.key] || ""} onChange={e => setSettings(s => ({ ...s, [f.key]: e.target.value }))} type="number" placeholder={f.placeholder}
+                  style={{ background: "#1a1a1a", border: "1px solid #ffffff15", borderRadius: "8px", padding: "6px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit", width: "120px", textAlign: "right" }} />
               </div>
             ))}
           </div>
 
-          {/* Measurements */}
+          <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", marginBottom: "16px", overflow: "hidden" }}>
+            <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff10", fontSize: "11px", letterSpacing: "0.12em", color: "#ffffff60" }}>LOG WEIGHT</div>
+            <div style={{ padding: "16px" }}>
+              <input placeholder="Enter current weight (lbs)" value={newBodyWeight} onChange={e => setNewBodyWeight(e.target.value)} type="number"
+                style={{ width: "100%", background: "#1a1a1a", border: "1px solid #ffffff15", borderRadius: "8px", padding: "10px 12px", color: "#fff", fontSize: "16px", fontFamily: "inherit", boxSizing: "border-box", marginBottom: "10px" }} />
+              <button onClick={saveBodyWeight} style={{ width: "100%", padding: "12px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #e94560, #f5a623)", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", fontWeight: "600" }}>Save Weight</button>
+            </div>
+          </div>
+
           <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", marginBottom: "16px", overflow: "hidden" }}>
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff10", fontSize: "11px", letterSpacing: "0.12em", color: "#ffffff60" }}>MEASUREMENTS (inches)</div>
             {["Chest", "Arms", "Waist", "Hips", "Thighs"].map(m => (
@@ -950,34 +1081,13 @@ export default function FitnessTracker() {
             ))}
           </div>
 
-          {/* Saved foods */}
-          <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", marginBottom: "16px", overflow: "hidden" }}>
-            <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff10", fontSize: "11px", letterSpacing: "0.12em", color: "#ffffff60" }}>SAVED FOODS</div>
-            {Object.entries(savedFoods).map(([section, foods]) => foods.length > 0 && (
-              <div key={section} style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff08" }}>
-                <div style={{ fontSize: "10px", color: "#e94560", letterSpacing: "0.08em", marginBottom: "8px" }}>{section.toUpperCase()}</div>
-                <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                  {foods.map(f => (
-                    <button key={f} onClick={() => removeSavedFood(section, f)} style={{ padding: "5px 10px", borderRadius: "12px", border: "1px solid #e9456060", background: "#e9456008", color: "#e9456080", fontSize: "11px", fontFamily: "inherit", cursor: "pointer" }}>
-                      × {f}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-            {Object.values(savedFoods).every(v => v.length === 0) && (
-              <div style={{ padding: "16px", textAlign: "center", color: "#ffffff30", fontSize: "13px" }}>No saved foods yet — they appear as you log meals</div>
-            )}
-          </div>
-
-          {/* Data management */}
-          <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", overflow: "hidden" }}>
+          <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", overflow: "hidden", marginBottom: "16px" }}>
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff10", fontSize: "11px", letterSpacing: "0.12em", color: "#ffffff60" }}>DATA</div>
             {[
-              { label: "Clear saved foods", action: () => setSavedFoods({ morning: [], lunch: [], dinner: [], preWorkout: [], postWorkout: [] }), color: "#f5a623" },
+              { label: "Clear saved foods", action: () => setSavedFoods({ morning: [], lunch: [], dinner: [], snack: [], preWorkout: [], postWorkout: [] }), color: "#f5a623" },
               { label: "Reset workout history", action: () => { setWorkoutHistory([]); setTotalWorkouts(0); setStreak(0); }, color: "#f5a623" },
-              { label: "Reset body weight log", action: () => setBodyWeights([{ date: Date.now(), weight: settings.startingWeight }]), color: "#f5a623" },
-              { label: "Reset all data", action: () => { setWeek(initialWeek(settings.workoutDays)); setWorkoutHistory([]); setTotalWorkouts(0); setStreak(0); setBodyWeights([{ date: Date.now(), weight: settings.startingWeight }]); setSavedFoods({ morning: [], lunch: [], dinner: [], preWorkout: [], postWorkout: [] }); setExerciseProgress({}); }, color: "#e94560" },
+              { label: "Reset body weight log", action: () => setBodyWeights([]), color: "#f5a623" },
+              { label: "Reset all data", action: () => { setWeek(initialWeek(settings.workoutDays)); setWorkoutHistory([]); setTotalWorkouts(0); setStreak(0); setBodyWeights([]); setSavedFoods({ morning: [], lunch: [], dinner: [], snack: [], preWorkout: [], postWorkout: [] }); setExerciseProgress({}); }, color: "#e94560" },
             ].map(btn => (
               <button key={btn.label} onClick={btn.action} style={{ width: "100%", padding: "14px 16px", background: "transparent", border: "none", borderBottom: "1px solid #ffffff08", color: btn.color, fontSize: "13px", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
                 {btn.label}
@@ -985,7 +1095,7 @@ export default function FitnessTracker() {
             ))}
           </div>
 
-          <div style={{ padding: "16px", textAlign: "center", color: "#ffffff20", fontSize: "11px", marginTop: "8px" }}>Fitness Tracker v1.0</div>
+          <div style={{ padding: "16px", textAlign: "center", color: "#ffffff20", fontSize: "11px" }}>Fitness Tracker v1.0</div>
         </div>
       )}
     </div>
