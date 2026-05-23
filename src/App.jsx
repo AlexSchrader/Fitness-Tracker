@@ -574,6 +574,13 @@ export default function FitnessTracker() {
               {currentStep.desc}
             </div>
 
+            {/* Don't show again */}
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
+              <input type="checkbox" id="dontShow" onChange={e => { if (e.target.checked) setOnboardingDone(true); }}
+                style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#e94560" }} />
+              <label htmlFor="dontShow" style={{ fontSize: "12px", color: "#ffffff50", cursor: "pointer" }}>Don't show again</label>
+            </div>
+
             {/* Buttons */}
             <div style={{ display: "flex", gap: "10px" }}>
               <button onClick={() => setOnboardingDone(true)} style={{ flex: 1, padding: "12px", borderRadius: "10px", border: "1px solid #ffffff20", background: "transparent", color: "#ffffff50", fontSize: "13px", fontFamily: "inherit", cursor: "pointer" }}>
