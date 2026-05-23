@@ -372,9 +372,6 @@ export default function FitnessTracker() {
   const [savedFoods, setSavedFoods] = useState({ morning: [], lunch: [], dinner: [], snack: [], preWorkout: [], postWorkout: [] });
   const [editingSection, setEditingSection] = useState(null);
 
-  const [onboardingStep, setOnboardingStep] = useState(0);
-  const [onboardingDone, setOnboardingDone] = useState(false);
-
   const ONBOARDING_STEPS = [
     { tab: "meals", icon: "🍽️", title: "Meal Planner", desc: "Log everything you eat throughout the day. Type any food and the app will estimate calories automatically. If it doesn't recognize something it'll ask you to enter calories manually. Your saved meals appear as quick-tap bubbles so you don't retype the same things daily." },
     { tab: "workout", icon: "🏋️", title: "Workout Tracker", desc: "Hit Start Workout to begin a timed session. Add exercises with sets, reps and weight — or cardio with duration and distance. Save your workout as a template and load it next week so you're not rebuilding from scratch every session." },
@@ -396,6 +393,10 @@ export default function FitnessTracker() {
   const [exerciseProgress, setExerciseProgress] = useState({});
   const [totalWorkouts, setTotalWorkouts] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [workoutActive, setWorkoutActive] = useState(false);
+  const [onboardingStep, setOnboardingStep] = useState(0);
+  const [onboardingDone, setOnboardingDone] = useState(false);
+  const currentStep = ONBOARDING_STEPS[onboardingStep];
 
   useEffect(() => {
     if (workoutActive) { timerRef.current = setInterval(() => setElapsed(e => e + 1), 1000); }
