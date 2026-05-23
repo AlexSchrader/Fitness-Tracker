@@ -229,7 +229,7 @@ const SmartMealInput = ({ label, valueKey, calKey, placeholder, section, dayData
 };
 
 export default function FitnessTracker() {
-  const [settings, setSettings] = useState({ name: "", startingWeight: "", goalWeight: "", height: "", age: "", calorieGoal: CALORIE_GOAL_DEFAULT, proteinGoal: PROTEIN_GOAL_DEFAULT, workoutDays: DEFAULT_WORKOUT_DAYS });
+  const [settings, setSettings] = useState({ name: "", startingWeight: "", goalWeight: "", height: "", age: "", calorieGoal: "", proteinGoal: "", workoutDays: DEFAULT_WORKOUT_DAYS });
   const [week, setWeek] = useState(initialWeek(DEFAULT_WORKOUT_DAYS));
   const [activeDay, setActiveDay] = useState("Monday");
   const [view, setView] = useState("meals");
@@ -323,8 +323,10 @@ export default function FitnessTracker() {
     return cal;
   };
 
+  const calorieGoal = settings.calorieGoal || CALORIE_GOAL_DEFAULT;
+  const proteinGoal = settings.proteinGoal || PROTEIN_GOAL_DEFAULT;
   const todayCalories = getDayCalories(activeDay);
-  const calPct = Math.min((todayCalories / settings.calorieGoal) * 100, 100);
+  const calPct = Math.min((todayCalories / calorieGoal) * 100, 100);
 
   const startWorkout = () => { setWorkoutActive(true); setWorkoutStart(Date.now()); setElapsed(0); };
   const endWorkout = () => {
@@ -476,12 +478,12 @@ export default function FitnessTracker() {
           <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", padding: "14px 16px", marginBottom: "16px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
               <div style={{ fontSize: "11px", color: "#ffffff60", letterSpacing: "0.08em" }}>DAILY CALORIES</div>
-              <div style={{ fontSize: "13px", fontWeight: "700", color: calPct >= 100 ? "#f5a623" : "#fff" }}>{todayCalories} / {settings.calorieGoal}</div>
+              <div style={{ fontSize: "13px", fontWeight: "700", color: calPct >= 100 ? "#f5a623" : "#fff" }}>{todayCalories} / {calorieGoal}</div>
             </div>
             <div style={{ background: "#1a1a1a", borderRadius: "6px", height: "10px", overflow: "hidden" }}>
               <div style={{ height: "100%", width: `${calPct}%`, background: calPct >= 100 ? "linear-gradient(90deg, #f5a623, #e94560)" : "linear-gradient(90deg, #4ecdc4, #44b89a)", borderRadius: "6px", transition: "width 0.3s" }} />
             </div>
-            <div style={{ fontSize: "10px", color: "#ffffff30", marginTop: "6px" }}>{calPct >= 100 ? "✅ Goal reached!" : `${settings.calorieGoal - todayCalories} calories to go`}</div>
+            <div style={{ fontSize: "10px", color: "#ffffff30", marginTop: "6px" }}>{calPct >= 100 ? "✅ Goal reached!" : `${calorieGoal - todayCalories} calories to go`}</div>
           </div>
 
           <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", marginBottom: "16px", overflow: "hidden" }}>
@@ -541,7 +543,7 @@ export default function FitnessTracker() {
 
           <div style={{ padding: "12px 16px", borderRadius: "12px", background: "linear-gradient(135deg, #e9456008, #f5a62308)", border: "1px solid #f5a62320" }}>
             <div style={{ fontSize: "10px", color: "#f5a623", letterSpacing: "0.1em", marginBottom: "4px" }}>DAILY TARGET</div>
-            <div style={{ fontSize: "12px", color: "#ffffff80", lineHeight: "1.6" }}>🥩 {settings.proteinGoal}g+ protein · 🍚 {settings.calorieGoal}+ calories · 💪 Progressive overload</div>
+            <div style={{ fontSize: "12px", color: "#ffffff80", lineHeight: "1.6" }}>🥩 {proteinGoal}g+ protein · 🍚 {calorieGoal}+ calories · 💪 Progressive overload</div>
           </div>
         </div>
       )}
