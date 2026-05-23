@@ -229,7 +229,7 @@ const SmartMealInput = ({ label, valueKey, calKey, placeholder, section, dayData
 };
 
 export default function FitnessTracker() {
-  const [settings, setSettings] = useState({ name: "Alex", startingWeight: 165, goalWeight: 185, height: "", age: 24, calorieGoal: CALORIE_GOAL_DEFAULT, proteinGoal: PROTEIN_GOAL_DEFAULT, workoutDays: DEFAULT_WORKOUT_DAYS });
+  const [settings, setSettings] = useState({ name: "", startingWeight: "", goalWeight: "", height: "", age: "", calorieGoal: CALORIE_GOAL_DEFAULT, proteinGoal: PROTEIN_GOAL_DEFAULT, workoutDays: DEFAULT_WORKOUT_DAYS });
   const [week, setWeek] = useState(initialWeek(DEFAULT_WORKOUT_DAYS));
   const [activeDay, setActiveDay] = useState("Monday");
   const [view, setView] = useState("meals");
@@ -251,7 +251,7 @@ export default function FitnessTracker() {
   const [elapsed, setElapsed] = useState(0);
   const timerRef = useRef(null);
 
-  const [bodyWeights, setBodyWeights] = useState([{ date: Date.now(), weight: 165 }]);
+  const [bodyWeights, setBodyWeights] = useState([]);
   const [showWeightPrompt, setShowWeightPrompt] = useState(false);
   const [newBodyWeight, setNewBodyWeight] = useState("");
   const [workoutHistory, setWorkoutHistory] = useState([]);
@@ -372,9 +372,9 @@ export default function FitnessTracker() {
   };
   const totalVolume = (ex) => (ex.sets || []).reduce((acc, s) => acc + (parseFloat(s.reps) || 0) * (parseFloat(s.weight) || 0), 0);
 
-  const currentWeight = bodyWeights[bodyWeights.length - 1]?.weight || settings.startingWeight;
-  const startWeight = bodyWeights[0]?.weight || settings.startingWeight;
-  const weightGain = (currentWeight - startWeight).toFixed(1);
+  const currentWeight = bodyWeights.length > 0 ? bodyWeights[bodyWeights.length - 1]?.weight : settings.startingWeight || "—";
+  const startWeight = bodyWeights.length > 0 ? bodyWeights[0]?.weight : settings.startingWeight || "—";
+  const weightGain = bodyWeights.length > 1 ? (currentWeight - startWeight).toFixed(1) : "0";
 
   const navBtn = (label, v) => (
     <button onClick={() => setView(v)} style={{ flex: 1, padding: "8px 2px", border: "none", background: view === v ? "linear-gradient(135deg, #e94560, #f5a623)" : "transparent", color: view === v ? "#fff" : "#ffffff50", fontSize: "9px", fontFamily: "inherit", cursor: "pointer", letterSpacing: "0.06em", borderRadius: "8px", fontWeight: view === v ? "700" : "400" }}>{label}</button>
@@ -834,8 +834,8 @@ export default function FitnessTracker() {
           <div style={{ background: "#111", borderRadius: "12px", border: "1px solid #ffffff10", marginBottom: "16px", overflow: "hidden" }}>
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff10", fontSize: "11px", letterSpacing: "0.12em", color: "#ffffff60" }}>PROFILE</div>
             {[
-              { label: "Name", key: "name", type: "text", placeholder: "Your name" },
-              { label: "Age", key: "age", type: "number", placeholder: "Age" },
+              { label: "Name", key: "name", type: "text", placeholder: "e.g. Alex" },
+              { label: "Age", key: "age", type: "number", placeholder: "e.g. 24" },
               { label: "Height", key: "height", type: "text", placeholder: 'e.g. 6\'2"' },
             ].map(f => (
               <div key={f.key} style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff08", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
