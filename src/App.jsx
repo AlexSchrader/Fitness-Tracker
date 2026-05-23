@@ -463,7 +463,7 @@ export default function FitnessTracker() {
       <div style={{ background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)", padding: "18px 20px 14px", borderBottom: "1px solid #ffffff15" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <div style={{ width: "34px", height: "34px", borderRadius: "8px", background: "linear-gradient(135deg, #e94560, #f5a623)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", fontWeight: "bold", color: "#fff" }}>💪</div>
+            <img src="/icon-192.png" alt="logo" style={{ width: "34px", height: "34px", borderRadius: "8px", objectFit: "cover" }} />
             <div>
               <div style={{ fontSize: "15px", fontWeight: "700", letterSpacing: "0.05em", color: "#fff" }}>FITNESS TRACKER</div>
               <div style={{ fontSize: "10px", color: "#ffffff60" }}>{currentWeight} lbs · {totalWorkouts} workouts · 🔥 {streak} streak</div>
