@@ -386,7 +386,13 @@ export default function FitnessTracker() {
   const [streak, setStreak] = useState(0);
 
   const [onboardingStep, setOnboardingStep] = useState(0);
-  const [onboardingDone, setOnboardingDone] = useState(false);
+  const [onboardingDone, setOnboardingDone] = useState(() => localStorage.getItem("onboardingDone") === "true");
+  const [dontShowChecked, setDontShowChecked] = useState(false);
+
+  const dismissOnboarding = () => {
+    setOnboardingDone(true);
+    localStorage.setItem("onboardingDone", "true");
+  };
 
   const ONBOARDING_STEPS = [
     { tab: "meals", icon: "🍽️", title: "Meal Planner", desc: "Log everything you eat throughout the day. Type any food and the app will estimate calories automatically. If it doesn't recognize something it'll ask you to enter calories manually. Your saved meals appear as quick-tap bubbles so you don't retype the same things daily." },
@@ -576,14 +582,14 @@ export default function FitnessTracker() {
 
             {/* Don't show again */}
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
-              <input type="checkbox" id="dontShow" onChange={e => { if (e.target.checked) setOnboardingDone(true); }}
+              <input type="checkbox" id="dontShow" checked={dontShowChecked} onChange={e => { setDontShowChecked(e.target.checked); if (e.target.checked) dismissOnboarding(); }}
                 style={{ width: "16px", height: "16px", cursor: "pointer", accentColor: "#e94560" }} />
               <label htmlFor="dontShow" style={{ fontSize: "12px", color: "#ffffff50", cursor: "pointer" }}>Don't show again</label>
             </div>
 
             {/* Buttons */}
             <div style={{ display: "flex", gap: "10px" }}>
-              <button onClick={() => setOnboardingDone(true)} style={{ flex: 1, padding: "12px", borderRadius: "10px", border: "1px solid #ffffff20", background: "transparent", color: "#ffffff50", fontSize: "13px", fontFamily: "inherit", cursor: "pointer" }}>
+              <button onClick={dismissOnboarding} style={{ flex: 1, padding: "12px", borderRadius: "10px", border: "1px solid #ffffff20", background: "transparent", color: "#ffffff50", fontSize: "13px", fontFamily: "inherit", cursor: "pointer" }}>
                 Skip
               </button>
               <button onClick={() => {
@@ -591,7 +597,7 @@ export default function FitnessTracker() {
                   setView(ONBOARDING_STEPS[onboardingStep + 1].tab);
                   setOnboardingStep(s => s + 1);
                 } else {
-                  setOnboardingDone(true);
+                  dismissOnboarding();
                   setView("meals");
                 }
               }} style={{ flex: 2, padding: "12px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #e94560, #f5a623)", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", fontWeight: "700" }}>
