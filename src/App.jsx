@@ -41,72 +41,235 @@ const DINNER_RECIPES = [
     steps: ["Cook white rice and mix with butter and garlic salt.", "Pat shrimp dry with paper towels.", "Season shrimp with garlic powder, paprika, salt and pepper.", "Heat butter in a pan over medium-high heat.", "Cook shrimp 2 min each side until pink and slightly curled.", "Serve over buttered rice with carrots on the side."] },
 ];
 
-// Food database - name: calories
 const FOOD_DB = {
-  // Sandwiches
-  "Ham and cheese sandwich": 380, "Roast beef and cheese sandwich": 420, "Turkey and cheese sandwich": 360,
-  "Chicken wrap": 400, "Tuna sandwich": 350, "PBJ": 380, "Peanut butter and jelly": 380,
-  "Sub": 500, "Hoagie": 500, "Grilled cheese": 350,
-  // Sides & snacks
-  "YoCrunch yogurt": 150, "Carrots": 35, "Apple": 80, "Grapes": 60, "String cheese": 80,
-  "Nutri-Grain bar": 130, "Goldfish crackers": 140, "Granola bar": 190, "Kind bar": 200,
-  "Clif bar": 250, "Chips": 150, "Doritos": 150, "Pretzels": 110, "Crackers": 130,
-  // Breakfast
-  "Oatmeal": 300, "Grits": 150, "Cereal": 280, "Frosted Flakes": 150, "Cheerios": 140,
-  "Toast": 130, "Bagel": 270, "Bagel with cream cheese": 370, "French toast": 380,
-  "Breakfast sandwich": 450, "Sausage biscuit": 430, "Croissant": 280,
-  "Bacon (3 strips)": 130, "Sausage links": 220, "Hash browns": 230,
-  // Protein
-  "Chicken breast": 165, "Grilled chicken": 200, "Fried chicken": 320,
-  "Ground beef": 280, "Steak": 650, "Salmon": 350, "Tilapia": 160,
-  "Tuna (can)": 150, "Shrimp": 200, "Turkey": 180, "Pork chop": 280,
-  "Hot dog": 290, "Burger patty": 300,
-  // Carbs
-  "White rice": 200, "Brown rice": 215, "Pasta": 400, "Mashed potatoes": 230,
-  "Baked potato": 160, "Fries": 380, "Corn": 130, "Bread slice": 80,
-  "Mac and cheese": 400, "Ramen": 550, "Lo mein": 500, "Fried rice": 450,
-  // Vegetables
-  "Broccoli": 55, "Salad": 120, "Caesar salad": 360, "Green beans": 44,
-  "Spinach": 20, "Mixed veggies": 80,
-  // Fruit
-  "Banana": 90, "Orange": 70, "Strawberries": 50, "Blueberries": 85,
-  "Watermelon": 85, "Mango": 100, "Peach": 60, "Pear": 100,
-  // Dairy & protein drinks
-  "Milk (cup)": 150, "Chocolate milk": 190, "Greek yogurt": 130, "Cottage cheese": 110,
-  "Cheese slice": 70, "Peanut butter (tbsp)": 95,
-  "Premier Protein shake": 160, "Fairlife Core Power": 420, "Protein shake": 300,
-  "Whey shake": 280,
-  // Drinks
-  "Orange juice": 110, "Apple juice": 120, "Gatorade": 140, "Powerade": 130,
-  "Sprite": 140, "Coke": 140, "Pepsi": 150, "Dr Pepper": 150, "Water": 0,
-  // Fast food
-  "Big Mac": 550, "Quarter Pounder": 520, "McChicken": 400, "Chicken nuggets (10)": 420,
-  "Whopper": 660, "Chick-fil-A sandwich": 500, "Chick-fil-A nuggets (8)": 260,
-  "Chipotle bowl": 700, "Subway 6 inch": 380, "Subway footlong": 760,
-  "Cook Out tray": 700, "Raising Cane's box": 750,
-  // Dinner recipes
-  "Ground Beef Tacos": 680, "Chicken Thighs & Mashed Potatoes": 680,
-  "Steak & Mashed Potatoes": 740, "Spaghetti & Meat Sauce": 670,
-  "Rotisserie Chicken & Rice": 650, "Shrimp & Buttered Rice": 630,
-  // Desserts
-  "Cookie": 150, "Brownie": 240, "Ice cream (cup)": 280, "Cake slice": 350,
+  // ── PACKAGED SNACKS ──
+  "Nature Valley wafer bar": { cal: 190, protein: 3, packaged: true },
+  "Nature Valley granola bar": { cal: 190, protein: 4, packaged: true },
+  "Nutri-Grain bar": { cal: 130, protein: 2, packaged: true },
+  "Kind bar": { cal: 200, protein: 7, packaged: true },
+  "Clif bar": { cal: 250, protein: 9, packaged: true },
+  "Rice Krispies treat": { cal: 90, protein: 1, packaged: true },
+  "Cheez-Its": { cal: 150, protein: 3, packaged: true },
+  "Goldfish crackers": { cal: 140, protein: 3, packaged: true },
+  "Pretzels": { cal: 110, protein: 3, packaged: true },
+  "Chips": { cal: 150, protein: 2, packaged: true },
+  "Doritos": { cal: 150, protein: 2, packaged: true },
+  "Popcorn": { cal: 120, protein: 2, packaged: true },
+  "Crackers": { cal: 130, protein: 2, packaged: true },
+  "Fruit snacks": { cal: 80, protein: 0, packaged: true },
+  "Oreos": { cal: 160, protein: 1, packaged: true },
+  "Cookies": { cal: 180, protein: 2, packaged: true },
+  "Granola bar": { cal: 190, protein: 4, packaged: true },
+  "Protein bar": { cal: 200, protein: 20, packaged: true },
+  "String cheese": { cal: 80, protein: 7, packaged: true },
+  "YoCrunch yogurt": { cal: 150, protein: 4, packaged: true },
+  "Premier Protein shake": { cal: 160, protein: 30, packaged: true },
+  "Fairlife Core Power": { cal: 420, protein: 42, packaged: true },
+  "Gatorade": { cal: 140, protein: 0, packaged: true },
+  "Powerade": { cal: 130, protein: 0, packaged: true },
+  "Soda can": { cal: 150, protein: 0, packaged: true },
+  "Sprite can": { cal: 140, protein: 0, packaged: true },
+  "Tuna can": { cal: 130, protein: 28, packaged: true },
+
+  // ── NUTS & SEEDS (per serving/handful) ──
+  "Peanuts": { cal: 160, protein: 7, serving: true },
+  "Almonds": { cal: 170, protein: 6, serving: true },
+  "Cashews": { cal: 160, protein: 5, serving: true },
+  "Mixed nuts": { cal: 170, protein: 5, serving: true },
+  "Trail mix": { cal: 180, protein: 5, serving: true },
+  "Sunflower seeds": { cal: 160, protein: 6, serving: true },
+  "Peanut butter": { cal: 190, protein: 8, serving: true },
+  "Almond butter": { cal: 200, protein: 7, serving: true },
+
+  // ── BREAKFAST ──
+  "Oatmeal": { cal: 300, protein: 10, serving: true },
+  "Cream of Wheat": { cal: 130, protein: 4, serving: true },
+  "Grits": { cal: 150, protein: 3, serving: true },
+  "Frosted Flakes": { cal: 150, protein: 2, serving: true },
+  "Cheerios": { cal: 140, protein: 5, serving: true },
+  "Honey Nut Cheerios": { cal: 150, protein: 4, serving: true },
+  "Lucky Charms": { cal: 150, protein: 3, serving: true },
+  "Cocoa Puffs": { cal: 150, protein: 2, serving: true },
+  "Frosted Mini Wheats": { cal: 180, protein: 5, serving: true },
+  "Cinnamon Toast Crunch": { cal: 170, protein: 2, serving: true },
+  "Cereal": { cal: 160, protein: 3, serving: true },
+  "Pancakes": { cal: 450, protein: 8, serving: true },
+  "Waffles": { cal: 420, protein: 7, serving: true },
+  "French toast": { cal: 380, protein: 10, serving: true },
+  "Toast": { cal: 130, protein: 4, serving: true },
+  "Muffin": { cal: 180, protein: 3, special: "muffin" },
+  "Croissant": { cal: 280, protein: 5, serving: true },
+  "Donut": { cal: 300, protein: 4, serving: true },
+  "Breakfast sandwich": { cal: 450, protein: 20, serving: true },
+  "Sausage biscuit": { cal: 430, protein: 14, serving: true },
+  "Hash browns": { cal: 230, protein: 2, serving: true },
+
+  // ── BAGELS ──
+  "Bagel": { cal: 270, protein: 10, special: "bagel" },
+  "Bagel plain": { cal: 270, protein: 10, special: "bagel" },
+  "Bagel everything": { cal: 280, protein: 10, special: "bagel" },
+  "Bagel sesame": { cal: 270, protein: 10, special: "bagel" },
+  "Bagel cinnamon raisin": { cal: 280, protein: 9, special: "bagel" },
+
+  // ── EGGS ──
+  "Eggs": { cal: 70, protein: 6, special: "eggs" },
+  "Scrambled eggs": { cal: 90, protein: 6, special: "eggs" },
+  "Fried eggs": { cal: 90, protein: 6, special: "eggs" },
+  "Hard boiled eggs": { cal: 70, protein: 6, special: "eggs" },
+  "Egg whites": { cal: 50, protein: 11, special: "eggs" },
+  "Omelette": { cal: 200, protein: 14, special: "eggs" },
+
+  // ── PROTEINS ──
+  "Chicken breast": { cal: 165, protein: 31, serving: true },
+  "Chicken thighs": { cal: 210, protein: 26, serving: true },
+  "Grilled chicken": { cal: 200, protein: 30, serving: true },
+  "Fried chicken": { cal: 320, protein: 28, serving: true },
+  "Ground beef": { cal: 250, protein: 26, serving: true },
+  "Steak": { cal: 650, protein: 62, serving: true },
+  "Salmon": { cal: 280, protein: 39, serving: true },
+  "Shrimp": { cal: 100, protein: 20, serving: true },
+  "Tuna": { cal: 130, protein: 28, serving: true },
+  "Turkey": { cal: 190, protein: 29, serving: true },
+  "Bacon": { cal: 130, protein: 10, serving: true },
+  "Sausage": { cal: 220, protein: 12, serving: true },
+  "Hot dog": { cal: 180, protein: 7, serving: true },
+  "Ham": { cal: 140, protein: 18, serving: true },
+  "Deli turkey": { cal: 60, protein: 11, serving: true },
+  "Deli ham": { cal: 70, protein: 10, serving: true },
+  "Deli roast beef": { cal: 80, protein: 12, serving: true },
+
+  // ── CARBS & SIDES ──
+  "White rice": { cal: 200, protein: 4, serving: true },
+  "Brown rice": { cal: 220, protein: 5, serving: true },
+  "Pasta": { cal: 220, protein: 8, serving: true },
+  "Spaghetti": { cal: 220, protein: 8, serving: true },
+  "Mac and cheese": { cal: 400, protein: 11, serving: true },
+  "Ramen": { cal: 380, protein: 10, serving: true },
+  "Mashed potatoes": { cal: 230, protein: 4, serving: true },
+  "Baked potato": { cal: 160, protein: 4, serving: true },
+  "French fries": { cal: 380, protein: 4, serving: true },
+  "Sweet potato": { cal: 130, protein: 2, serving: true },
+  "Bread": { cal: 80, protein: 3, serving: true },
+  "Corn": { cal: 130, protein: 5, serving: true },
+  "Stuffing": { cal: 350, protein: 6, serving: true },
+  "Fried rice": { cal: 450, protein: 12, serving: true },
+
+  // ── DAIRY ──
+  "Milk": { cal: 120, protein: 8, serving: true },
+  "Lactaid milk": { cal: 110, protein: 8, serving: true },
+  "Chocolate milk": { cal: 190, protein: 8, serving: true },
+  "Cheese": { cal: 110, protein: 7, serving: true },
+  "Shredded cheese": { cal: 110, protein: 7, serving: true },
+  "Cottage cheese": { cal: 180, protein: 25, serving: true },
+  "Greek yogurt": { cal: 130, protein: 17, serving: true },
+  "Regular yogurt": { cal: 150, protein: 8, serving: true },
+  "Butter": { cal: 100, protein: 0, serving: true },
+  "Cream cheese": { cal: 50, protein: 1, serving: true },
+  "Reduced fat cream cheese": { cal: 35, protein: 2, serving: true },
+  "Sour cream": { cal: 60, protein: 1, serving: true },
+
+  // ── DRINKS ──
+  "Protein shake": { cal: 300, protein: 25, serving: true },
+  "Whey protein shake": { cal: 300, protein: 25, serving: true },
+  "Orange juice": { cal: 110, protein: 2, serving: true },
+  "Apple juice": { cal: 120, protein: 0, serving: true },
+  "Water": { cal: 0, protein: 0, serving: true },
+  "Coffee": { cal: 50, protein: 1, special: "coffee" },
+  "Smoothie": { cal: 380, protein: 5, special: "smoothie" },
+
+  // ── FRUITS ──
+  "Apple": { cal: 80, protein: 0, serving: true },
+  "Banana": { cal: 90, protein: 1, serving: true },
+  "Grapes": { cal: 60, protein: 1, serving: true },
+  "Orange": { cal: 70, protein: 1, serving: true },
+  "Strawberries": { cal: 50, protein: 1, serving: true },
+  "Blueberries": { cal: 85, protein: 1, serving: true },
+  "Watermelon": { cal: 85, protein: 2, serving: true },
+  "Mango": { cal: 100, protein: 1, serving: true },
+  "Pineapple": { cal: 80, protein: 1, serving: true },
+  "Peach": { cal: 60, protein: 1, serving: true },
+  "Pear": { cal: 100, protein: 1, serving: true },
+
+  // ── VEGETABLES ──
+  "Broccoli": { cal: 55, protein: 4, serving: true },
+  "Carrots": { cal: 35, protein: 1, serving: true },
+  "Baby carrots": { cal: 35, protein: 1, serving: true },
+  "Green beans": { cal: 35, protein: 2, serving: true },
+  "Asparagus": { cal: 40, protein: 4, serving: true },
+  "Spinach": { cal: 20, protein: 3, serving: true },
+  "Salad": { cal: 100, protein: 2, serving: true },
+  "Peas": { cal: 120, protein: 8, serving: true },
+  "Cucumber": { cal: 15, protein: 1, serving: true },
+  "Tomato": { cal: 25, protein: 1, serving: true },
+
+  // ── SANDWICHES & WRAPS ──
+  "Ham and cheese sandwich": { cal: 380, protein: 22, serving: true },
+  "Roast beef and cheese sandwich": { cal: 420, protein: 26, serving: true },
+  "Turkey and cheese sandwich": { cal: 360, protein: 24, serving: true },
+  "Chicken wrap": { cal: 400, protein: 28, serving: true },
+  "Tuna sandwich": { cal: 350, protein: 22, serving: true },
+  "PBJ": { cal: 380, protein: 12, serving: true },
+  "Peanut butter and jelly": { cal: 380, protein: 12, serving: true },
+  "Grilled cheese": { cal: 350, protein: 12, serving: true },
+  "BLT": { cal: 400, protein: 16, serving: true },
+
+  // ── FULL MEALS ──
+  "Ground Beef Tacos": { cal: 680, protein: 40, serving: true },
+  "Chicken Thighs & Mashed Potatoes": { cal: 680, protein: 44, serving: true },
+  "Steak & Mashed Potatoes": { cal: 740, protein: 50, serving: true },
+  "Spaghetti & Meat Sauce": { cal: 670, protein: 42, serving: true },
+  "Rotisserie Chicken & Rice": { cal: 650, protein: 46, serving: true },
+  "Shrimp & Buttered Rice": { cal: 630, protein: 40, serving: true },
+  "Chicken and rice": { cal: 550, protein: 42, serving: true },
+  "Burrito bowl": { cal: 650, protein: 40, serving: true },
+  "Pizza slice": { cal: 280, protein: 12, serving: true },
+  "Burger": { cal: 650, protein: 35, serving: true },
+  "Cheeseburger": { cal: 700, protein: 38, serving: true },
+  "Chicken sandwich": { cal: 500, protein: 32, serving: true },
+  "Stir fry": { cal: 500, protein: 30, serving: true },
+  "Soup": { cal: 250, protein: 10, serving: true },
+  "Chili": { cal: 350, protein: 22, serving: true },
+
+  // ── GYM RESTAURANTS (*calories may vary) ──
+  "Subway 6 inch": { cal: 400, protein: 25, restaurant: true },
+  "Subway footlong": { cal: 800, protein: 50, restaurant: true },
+  "Firehouse small sub": { cal: 450, protein: 28, restaurant: true },
+  "Firehouse large sub": { cal: 900, protein: 56, restaurant: true },
+  "Jimmy Johns small": { cal: 380, protein: 22, restaurant: true },
+  "Jimmy Johns large": { cal: 760, protein: 44, restaurant: true },
+  "Chipotle bowl": { cal: 700, protein: 42, restaurant: true },
+  "Chipotle burrito": { cal: 800, protein: 45, restaurant: true },
 };
 
-// Foods that need quantity/size questions
+const GYM_RESTAURANTS = ["Subway", "Firehouse Subs", "Jimmy John's", "Chipotle", "Tropical Smoothie Cafe", "Jamba Juice", "Smoothie King", "Planet Smoothie"];
+const FOOD_SEARCH_LIST = Object.keys(FOOD_DB);
+
+// Foods that need extra questions
 const FOOD_QUESTIONS = {
-  "eggs": { type: "quantity", options: ["1 egg (~70 cal)", "2 eggs (~140 cal)", "3 eggs (~210 cal)", "4 eggs (~280 cal)"] },
-  "egg": { type: "quantity", options: ["1 egg (~70 cal)", "2 eggs (~140 cal)", "3 eggs (~210 cal)", "4 eggs (~280 cal)"] },
+  "eggs": { type: "quantity", options: ["1 egg (~70 cal, 6g)", "2 eggs (~140 cal, 12g)", "3 eggs (~210 cal, 18g)", "4 eggs (~280 cal, 24g)"] },
+  "egg": { type: "quantity", options: ["1 egg (~70 cal, 6g)", "2 eggs (~140 cal, 12g)", "3 eggs (~210 cal, 18g)", "4 eggs (~280 cal, 24g)"] },
   "pancake": { type: "quantity", options: ["1 (~150 cal)", "2 (~300 cal)", "3 (~450 cal)"] },
   "waffle": { type: "quantity", options: ["1 (~210 cal)", "2 (~420 cal)", "3 (~630 cal)"] },
   "pizza": { type: "quantity", options: ["1 slice (~280 cal)", "2 slices (~560 cal)", "3 slices (~840 cal)"] },
-  "wings": { type: "quantity", options: ["6 (~430 cal)", "10 (~720 cal)", "15 (~1080 cal)"] },
   "muffin": { type: "size", options: ["Mini (~90 cal)", "Regular (~180 cal)", "Large (~320 cal)"] },
+  "bagel": { type: "bagel", options: ["Plain", "Everything", "Sesame", "Cinnamon Raisin"] },
   "smoothie": { type: "source", options: ["Homemade", "Went out"] },
   "shake": { type: "size", options: ["Small (~220 cal)", "Medium (~380 cal)", "Large (~480 cal)"] },
   "coffee": { type: "size", options: ["Small (~50 cal)", "Medium (~150 cal)", "Large (~250 cal)"] },
   "juice": { type: "size", options: ["Small (~120 cal)", "Medium (~200 cal)", "Large (~320 cal)"] },
-  "bowl": { type: "size", options: ["Small (~400 cal)", "Regular (~600 cal)", "Large (~800 cal)"] },
   "burger": { type: "size", options: ["Single (~480 cal)", "Double (~650 cal)", "Triple (~820 cal)"] },
+  "peanuts": { type: "serving", options: ["Small handful (~80 cal)", "Regular handful (~160 cal)", "Large handful (~240 cal)"] },
+  "almonds": { type: "serving", options: ["Small handful (~85 cal)", "Regular handful (~170 cal)", "Large handful (~255 cal)"] },
+  "nuts": { type: "serving", options: ["Small handful (~85 cal)", "Regular handful (~170 cal)", "Large handful (~255 cal)"] },
+  "peanut butter": { type: "serving", options: ["1 tbsp (~95 cal)", "2 tbsp (~190 cal)", "3 tbsp (~285 cal)"] },
+  "chips": { type: "serving", options: ["Small bag (~150 cal)", "Regular bag (~300 cal)", "Large bag (~450 cal)"] },
+  "subway": { type: "restaurant_size", options: ["6 inch (~400 cal, 25g protein)", "Footlong (~800 cal, 50g protein)"] },
+  "firehouse": { type: "restaurant_size", options: ["Small (~450 cal, 28g protein)", "Large (~900 cal, 56g protein)"] },
+  "jimmy": { type: "restaurant_size", options: ["Small (~380 cal, 22g protein)", "Large (~760 cal, 44g protein)"] },
+  "chipotle": { type: "restaurant_size", options: ["Bowl (~700 cal, 42g protein)", "Burrito (~800 cal, 45g protein)"] },
+  "tropical smoothie": { type: "restaurant_size", options: ["Small (~320 cal)", "Medium (~480 cal)", "Large (~620 cal)"] },
+  "jamba": { type: "restaurant_size", options: ["Small (~280 cal)", "Medium (~420 cal)", "Large (~560 cal)"] },
+  "smoothie king": { type: "restaurant_size", options: ["Small (~300 cal)", "Medium (~450 cal)", "Large (~600 cal)"] },
 };
 
 const CALORIE_GOAL_DEFAULT = 3000;
@@ -140,7 +303,7 @@ const searchFoods = (query) => {
   return Object.entries(FOOD_DB)
     .filter(([name]) => name.toLowerCase().includes(lower))
     .slice(0, 6)
-    .map(([name, cal]) => ({ name, cal }));
+    .map(([name, data]) => ({ name, cal: data.cal, protein: data.protein, packaged: data.packaged, serving: data.serving, special: data.special, restaurant: data.restaurant }));
 };
 
 const getQuestionForFood = (name) => {
@@ -172,16 +335,23 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
   };
 
   const handleSelectFood = (name, cal) => {
+    const dbEntry = FOOD_DB[name];
     const q = getQuestionForFood(name);
+
+    // Packaged items - ask how many packages
+    if (dbEntry?.packaged) {
+      setPendingFood({ name, baseCal: dbEntry.cal, baseProtein: dbEntry.protein, question: { type: "packages", options: ["1", "2", "3", "4"] } });
+      setQuery(""); setSuggestions([]);
+      return;
+    }
+
     if (q) {
       setPendingFood({ name, question: q });
-      setQuery("");
-      setSuggestions([]);
+      setQuery(""); setSuggestions([]);
     } else {
-      onAdd({ name, cal });
+      onAdd({ name, cal: dbEntry?.cal || cal, protein: dbEntry?.protein || 0 });
       onSaveFood(name);
-      setQuery("");
-      setSuggestions([]);
+      setQuery(""); setSuggestions([]);
     }
     inputRef.current?.focus();
   };
@@ -192,10 +362,10 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
     if (q) {
       setPendingFood({ name: query, question: q });
     } else {
-      // Unknown food - add with 0 cal flagged
       const match = Object.entries(FOOD_DB).find(([k]) => k.toLowerCase().includes(query.toLowerCase()));
-      const cal = match ? match[1] : null;
-      onAdd({ name: query, cal: cal || 0, unknown: !cal });
+      const data = match ? match[1] : null;
+      const cal = data?.cal || 0;
+      onAdd({ name: query, cal, protein: data?.protein || 0, unknown: !cal });
       onSaveFood(query);
     }
     setQuery("");
@@ -205,6 +375,25 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
 
   const handleAnswer = (opt) => {
     if (!pendingFood) return;
+
+    // Bagel flow - step 1: type, step 2: cream cheese
+    if (pendingFood.question.type === "bagel" && !pendingFood.bagelType) {
+      setPendingFood({ ...pendingFood, bagelType: opt, step: "creamcheese" });
+      return;
+    }
+    if (pendingFood.step === "creamcheese") {
+      let extraCal = 0;
+      if (opt === "Regular cream cheese") extraCal = 100;
+      if (opt === "Reduced fat cream cheese") extraCal = 70;
+      const baseCal = FOOD_DB[`Bagel ${pendingFood.bagelType.toLowerCase()}`]?.cal || 270;
+      onAdd({ name: `${pendingFood.bagelType} bagel${opt !== "No cream cheese" ? ` with ${opt.toLowerCase()}` : ""}`, cal: baseCal + extraCal, protein: 10 });
+      onSaveFood(`${pendingFood.bagelType} bagel`);
+      setPendingFood(null);
+      inputRef.current?.focus();
+      return;
+    }
+
+    // Smoothie flow
     if (pendingFood.question.type === "source" && opt === "Went out") {
       setPendingFood({ ...pendingFood, step: "restaurant" });
       return;
@@ -213,10 +402,24 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
       setPendingFood({ ...pendingFood, restaurant: opt, step: "size" });
       return;
     }
+
+    // Packaged items - ask how many packages
+    if (pendingFood.question.type === "packages") {
+      const count = parseInt(opt) || 1;
+      onAdd({ name: `${pendingFood.name} x${count}`, cal: pendingFood.baseCal * count, protein: (pendingFood.baseProtein || 0) * count });
+      onSaveFood(pendingFood.name);
+      setPendingFood(null);
+      inputRef.current?.focus();
+      return;
+    }
+
+    // Default - extract calories from option string
     const calMatch = opt.match(/\d+/);
     const cal = calMatch ? parseInt(calMatch[0]) : 0;
+    const proteinMatch = opt.match(/(\d+)g protein/);
+    const protein = proteinMatch ? parseInt(proteinMatch[1]) : 0;
     const name = pendingFood.restaurant ? `${pendingFood.name} from ${pendingFood.restaurant}` : pendingFood.name;
-    onAdd({ name, cal });
+    onAdd({ name, cal, protein });
     onSaveFood(name);
     setPendingFood(null);
     inputRef.current?.focus();
@@ -264,7 +467,7 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
       {savedFoods.length > 0 && (
         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
           {savedFoods.map(food => (
-            <button key={food} onClick={() => isEditing ? onRemoveSaved(food) : handleSelectFood(food, FOOD_DB[food] || 0)}
+            <button key={food} onClick={() => isEditing ? onRemoveSaved(food) : handleSelectFood(food, FOOD_DB[food]?.cal || 0)}
               style={{ padding: "4px 10px", borderRadius: "12px", border: "1px solid #ffffff15", background: isEditing ? "#e9456008" : "transparent", color: isEditing ? "#e9456060" : "#ffffff50", fontSize: "11px", fontFamily: "inherit", cursor: "pointer" }}>
               {isEditing && "× "}{food}
             </button>
@@ -306,7 +509,49 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
       {pendingFood && (
         <div style={{ background: "#1a1a1a", borderRadius: "8px", border: "1px solid #4ecdc430", padding: "12px" }}>
           <div style={{ fontSize: "12px", color: "#fff", marginBottom: "8px" }}>{pendingFood.name}</div>
-          {pendingFood.step === "restaurant" ? (
+
+          {/* Packages */}
+          {pendingFood.question.type === "packages" && (
+            <>
+              <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "4px" }}>How many packages?</div>
+              <div style={{ fontSize: "10px", color: "#ffffff30", marginBottom: "8px" }}>~{pendingFood.baseCal} cal per package</div>
+              <div style={{ display: "flex", gap: "6px" }}>
+                {["1", "2", "3", "4"].map(opt => (
+                  <button key={opt} onClick={() => handleAnswer(opt)}
+                    style={{ flex: 1, padding: "10px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "16px", fontFamily: "inherit", cursor: "pointer", fontWeight: "700" }}>{opt}</button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Bagel type */}
+          {pendingFood.question.type === "bagel" && !pendingFood.bagelType && (
+            <>
+              <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>What kind?</div>
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                {["Plain", "Everything", "Sesame", "Cinnamon Raisin"].map(opt => (
+                  <button key={opt} onClick={() => handleAnswer(opt)}
+                    style={{ padding: "6px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Bagel cream cheese */}
+          {pendingFood.step === "creamcheese" && (
+            <>
+              <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>Cream cheese?</div>
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                {["No cream cheese", "Regular cream cheese (+100 cal)", "Reduced fat cream cheese (+70 cal)"].map(opt => (
+                  <button key={opt} onClick={() => handleAnswer(opt)}
+                    style={{ padding: "6px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Restaurant search */}
+          {pendingFood.step === "restaurant" && (
             <>
               <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>Where did you go?</div>
               <input placeholder="Type restaurant..." value={restaurantQuery} onChange={e => handleRestaurantInput(e.target.value)}
@@ -322,9 +567,13 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
                 </button>
               )}
             </>
-          ) : pendingFood.step === "size" ? (
+          )}
+
+          {/* Size after restaurant */}
+          {pendingFood.step === "size" && (
             <>
-              <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>What size?</div>
+              <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "4px" }}>What size?</div>
+              <div style={{ fontSize: "10px", color: "#ffffff30", marginBottom: "8px" }}>*calories may vary</div>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                 {["Small (~380 cal)", "Medium (~540 cal)", "Large (~720 cal)"].map(opt => (
                   <button key={opt} onClick={() => handleAnswer(opt)}
@@ -332,10 +581,27 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
                 ))}
               </div>
             </>
-          ) : (
+          )}
+
+          {/* Restaurant size direct */}
+          {pendingFood.question.type === "restaurant_size" && !pendingFood.step && (
+            <>
+              <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "4px" }}>What did you get?</div>
+              <div style={{ fontSize: "10px", color: "#ffffff30", marginBottom: "8px" }}>*calories may vary</div>
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                {pendingFood.question.options.map(opt => (
+                  <button key={opt} onClick={() => handleAnswer(opt)}
+                    style={{ padding: "6px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Generic questions */}
+          {!["packages", "bagel", "restaurant_size"].includes(pendingFood.question.type) && !pendingFood.step && !pendingFood.bagelType && (
             <>
               <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>
-                {pendingFood.question.type === "quantity" ? "How many?" : pendingFood.question.type === "source" ? "Homemade or went out?" : "What size?"}
+                {pendingFood.question.type === "quantity" ? "How many?" : pendingFood.question.type === "source" ? "Homemade or went out?" : pendingFood.question.type === "serving" ? "How much?" : "What size?"}
               </div>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                 {pendingFood.question.options.map(opt => (
@@ -345,7 +611,8 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
               </div>
             </>
           )}
-          <button onClick={() => setPendingFood(null)} style={{ marginTop: "8px", fontSize: "11px", color: "#ffffff30", background: "transparent", border: "none", cursor: "pointer", padding: "0" }}>Cancel</button>
+
+          <button onClick={() => setPendingFood(null)} style={{ marginTop: "10px", fontSize: "11px", color: "#ffffff30", background: "transparent", border: "none", cursor: "pointer", padding: "0" }}>Cancel</button>
         </div>
       )}
 
@@ -911,10 +1178,10 @@ export default function FitnessTracker() {
                       <>
                         {newExercise.sets.map((s, i) => (
                           <div key={i} style={{ display: "flex", gap: "8px", marginBottom: "8px", alignItems: "center" }}>
-                            <div style={{ fontSize: "11px", color: "#ffffff40", width: "36px" }}>Set {i + 1}</div>
-                            <input placeholder="Reps" value={s.reps} onChange={e => updateSet(i, "reps", e.target.value)} type="number" style={{ flex: 1, background: "#1a1a1a", border: "1px solid #ffffff15", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit" }} />
-                            <input placeholder="lbs" value={s.weight} onChange={e => updateSet(i, "weight", e.target.value)} type="number" style={{ flex: 1, background: "#1a1a1a", border: "1px solid #ffffff15", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit" }} />
-                            {newExercise.sets.length > 1 && <button onClick={() => removeSet(i)} style={{ background: "transparent", border: "none", color: "#ffffff30", cursor: "pointer", fontSize: "18px" }}>×</button>}
+                            <div style={{ fontSize: "11px", color: "#ffffff40", width: "36px", flexShrink: 0 }}>Set {i + 1}</div>
+                            <input placeholder="Reps" value={s.reps} onChange={e => updateSet(i, "reps", e.target.value)} type="number" style={{ flex: 1, minWidth: 0, background: "#1a1a1a", border: "1px solid #ffffff15", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit" }} />
+                            <input placeholder="lbs" value={s.weight} onChange={e => updateSet(i, "weight", e.target.value)} type="number" style={{ flex: 1, minWidth: 0, background: "#1a1a1a", border: "1px solid #ffffff15", borderRadius: "8px", padding: "8px 10px", color: "#fff", fontSize: "16px", fontFamily: "inherit" }} />
+                            {newExercise.sets.length > 1 && <button onClick={() => removeSet(i)} style={{ background: "transparent", border: "none", color: "#ffffff30", cursor: "pointer", fontSize: "18px", flexShrink: 0 }}>×</button>}
                           </div>
                         ))}
                         <button onClick={addSet} style={{ width: "100%", padding: "9px", borderRadius: "8px", border: "1px solid #ffffff20", background: "transparent", color: "#ffffff60", fontSize: "12px", fontFamily: "inherit", cursor: "pointer", marginBottom: "8px" }}>+ Add Set</button>
