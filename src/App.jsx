@@ -303,14 +303,38 @@ const formatTime = (ts) => new Date(ts).toLocaleTimeString([], { hour: "2-digit"
 const formatDate = (ts) => new Date(ts).toLocaleDateString([], { month: "short", day: "numeric" });
 
 const getSectionCalories = (items) => (items || []).reduce((sum, item) => sum + (item.cal || 0), 0);
+const getSectionProtein = (items) => (items || []).reduce((sum, item) => sum + (item.protein || 0), 0);
 
-const searchFoods = (query) => {
+const searchLocalFoods = (query) => {
   if (!query || query.length < 1) return [];
   const lower = query.toLowerCase();
   return Object.entries(FOOD_DB)
     .filter(([name]) => name.toLowerCase().includes(lower))
-    .slice(0, 6)
-    .map(([name, data]) => ({ name, cal: data.cal, protein: data.protein, packaged: data.packaged, serving: data.serving, special: data.special, restaurant: data.restaurant }));
+    .slice(0, 4)
+    .map(([name, data]) => ({ name, cal: data.cal, protein: data.protein, packaged: data.packaged, serving: data.serving, special: data.special, restaurant: data.restaurant, source: "local" }));
+};
+
+const searchOpenFoodFacts = async (query) => {
+  if (!query || query.length < 2) return [];
+  try {
+    const res = await fetch(
+      `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=8&fields=product_name,nutriments,serving_size,brands`
+    );
+    const data = await res.json();
+    return (data.products || [])
+      .filter(p => p.product_name && p.nutriments?.["energy-kcal_serving"])
+      .slice(0, 5)
+      .map(p => ({
+        name: p.brands ? `${p.product_name} (${p.brands.split(",")[0]})` : p.product_name,
+        cal: Math.round(p.nutriments["energy-kcal_serving"] || 0),
+        protein: Math.round(p.nutriments["proteins_serving"] || 0),
+        serving: p.serving_size || "1 serving",
+        source: "api",
+        packaged: true,
+      }));
+  } catch {
+    return [];
+  }
 };
 
 const getQuestionForFood = (name) => {
@@ -332,22 +356,38 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
 
   const totalCal = getSectionCalories(items);
 
+  const [isSearching, setIsSearching] = useState(false);
+  const searchTimeout = useRef(null);
+
   const handleInput = (val) => {
     setQuery(val);
-    if (val.length > 0) {
-      setSuggestions(searchFoods(val));
-    } else {
-      setSuggestions([]);
+    if (!val) { setSuggestions([]); return; }
+
+    // Show local results immediately
+    const local = searchLocalFoods(val);
+    setSuggestions(local);
+
+    // Then hit API after short delay
+    if (val.length >= 2) {
+      clearTimeout(searchTimeout.current);
+      setIsSearching(true);
+      searchTimeout.current = setTimeout(async () => {
+        const api = await searchOpenFoodFacts(val);
+        const localNames = local.map(r => r.name.toLowerCase());
+        const filtered = api.filter(r => !localNames.includes(r.name.toLowerCase()));
+        setSuggestions([...local, ...filtered]);
+        setIsSearching(false);
+      }, 500);
     }
   };
 
-  const handleSelectFood = (name, cal) => {
-    const dbEntry = FOOD_DB[name];
+  const handleSelectFood = (name, cal, foodData) => {
+    const dbEntry = FOOD_DB[name] || foodData;
     const lower = name.toLowerCase();
 
     // Packaged items - ask how many packages
     if (dbEntry?.packaged) {
-      setPendingFood({ name, baseCal: dbEntry.cal, baseProtein: dbEntry.protein, question: { type: "packages", options: ["1", "2", "3", "4"] } });
+      setPendingFood({ name, baseCal: dbEntry.cal || cal, baseProtein: dbEntry.protein || 0, question: { type: "packages", options: ["1", "2", "3", "4"] } });
       setQuery(""); setSuggestions([]);
       return;
     }
@@ -361,7 +401,7 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
 
     // Protein powder - ask servings
     if (dbEntry?.special === "protein_powder") {
-      const opts = lower.includes("premier") 
+      const opts = lower.includes("premier")
         ? ["1 scoop (~130 cal, 30g protein)", "2 scoops (~260 cal, 60g protein)"]
         : ["1 scoop (~120 cal, 25g protein)", "2 scoops (~240 cal, 50g protein)"];
       setPendingFood({ name, question: { type: "protein_powder", options: opts } });
@@ -518,15 +558,27 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
       )}
 
       {/* Search suggestions */}
-      {suggestions.length > 0 && !pendingFood && (
+      {(suggestions.length > 0 || isSearching) && !pendingFood && (
         <div style={{ marginTop: "6px", background: "#1a1a1a", borderRadius: "8px", border: "1px solid #ffffff10", overflow: "hidden" }}>
+          {isSearching && suggestions.length === 0 && (
+            <div style={{ padding: "10px 12px", fontSize: "12px", color: "#ffffff40" }}>Searching...</div>
+          )}
           {suggestions.map(s => (
-            <button key={s.name} onClick={() => handleSelectFood(s.name, s.cal)}
-              style={{ display: "flex", justifyContent: "space-between", width: "100%", padding: "10px 12px", background: "transparent", border: "none", borderBottom: "1px solid #ffffff08", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
-              <span>{s.name}</span>
-              <span style={{ color: "#ffffff40", fontSize: "11px" }}>~{s.cal} cal</span>
+            <button key={s.name} onClick={() => handleSelectFood(s.name, s.cal, s)}
+              style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", padding: "10px 12px", background: "transparent", border: "none", borderBottom: "1px solid #ffffff08", color: "#fff", fontSize: "13px", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>
+              <div style={{ flex: 1, marginRight: "8px" }}>
+                <div style={{ fontSize: "12px", color: "#fff" }}>{s.name}</div>
+                {s.serving && s.source === "api" && <div style={{ fontSize: "10px", color: "#ffffff30" }}>per {s.serving}</div>}
+              </div>
+              <div style={{ textAlign: "right", flexShrink: 0 }}>
+                <div style={{ fontSize: "11px", color: "#ffffff50" }}>{s.cal} cal</div>
+                {s.protein > 0 && <div style={{ fontSize: "10px", color: "#4ecdc4" }}>{s.protein}g protein</div>}
+              </div>
             </button>
           ))}
+          {isSearching && suggestions.length > 0 && (
+            <div style={{ padding: "6px 12px", fontSize: "10px", color: "#ffffff20" }}>Searching more...</div>
+          )}
         </div>
       )}
 
