@@ -168,7 +168,11 @@ const FOOD_DB = {
   "Reduced fat cream cheese": { cal: 35, protein: 2, serving: true },
   "Sour cream": { cal: 60, protein: 1, serving: true },
 
-  // ── DRINKS ──
+  // ── PROTEIN DRINKS & SUPPLEMENTS ──
+  "Fairlife Core Power": { cal: 230, protein: 42, special: "fairlife" },
+  "Premier Protein shake": { cal: 160, protein: 30, packaged: true },
+  "Premier Protein powder": { cal: 130, protein: 30, special: "protein_powder" },
+  "Whey protein powder": { cal: 120, protein: 25, special: "protein_powder" },
   "Protein shake": { cal: 300, protein: 25, serving: true },
   "Whey protein shake": { cal: 300, protein: 25, serving: true },
   "Orange juice": { cal: 110, protein: 2, serving: true },
@@ -269,8 +273,10 @@ const FOOD_QUESTIONS = {
   "chipotle": { type: "restaurant_size", options: ["Bowl (~700 cal, 42g protein)", "Burrito (~800 cal, 45g protein)"] },
   "tropical smoothie": { type: "restaurant_size", options: ["Small (~320 cal)", "Medium (~480 cal)", "Large (~620 cal)"] },
   "jamba": { type: "restaurant_size", options: ["Small (~280 cal)", "Medium (~420 cal)", "Large (~560 cal)"] },
-  "smoothie king": { type: "restaurant_size", options: ["Small (~300 cal)", "Medium (~450 cal)", "Large (~600 cal)"] },
-};
+  "fairlife": { type: "fairlife", options: ["Elite 42g protein (230 cal)", "Light 20g protein (150 cal)", "Elite 26g protein (170 cal)"] },
+  "premier protein powder": { type: "protein_powder", options: ["1 scoop (~130 cal, 30g protein)", "2 scoops (~260 cal, 60g protein)"] },
+  "whey protein powder": { type: "protein_powder", options: ["1 scoop (~120 cal, 25g protein)", "2 scoops (~240 cal, 50g protein)"] },
+  "protein powder": { type: "protein_powder", options: ["1 scoop (~125 cal, 25g protein)", "2 scoops (~250 cal, 50g protein)"] },
 
 const CALORIE_GOAL_DEFAULT = 3000;
 const PROTEIN_GOAL_DEFAULT = 150;
@@ -336,7 +342,7 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
 
   const handleSelectFood = (name, cal) => {
     const dbEntry = FOOD_DB[name];
-    const q = getQuestionForFood(name);
+    const lower = name.toLowerCase();
 
     // Packaged items - ask how many packages
     if (dbEntry?.packaged) {
@@ -345,6 +351,24 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
       return;
     }
 
+    // Fairlife - ask which version
+    if (dbEntry?.special === "fairlife") {
+      setPendingFood({ name, question: { type: "fairlife", options: ["Elite 42g protein (230 cal)", "Light 20g protein (150 cal)", "Elite 26g protein (170 cal)"] } });
+      setQuery(""); setSuggestions([]);
+      return;
+    }
+
+    // Protein powder - ask servings
+    if (dbEntry?.special === "protein_powder") {
+      const opts = lower.includes("premier") 
+        ? ["1 scoop (~130 cal, 30g protein)", "2 scoops (~260 cal, 60g protein)"]
+        : ["1 scoop (~120 cal, 25g protein)", "2 scoops (~240 cal, 50g protein)"];
+      setPendingFood({ name, question: { type: "protein_powder", options: opts } });
+      setQuery(""); setSuggestions([]);
+      return;
+    }
+
+    const q = getQuestionForFood(name);
     if (q) {
       setPendingFood({ name, question: q });
       setQuery(""); setSuggestions([]);
@@ -509,6 +533,44 @@ const MealSection = ({ label, sectionKey, items, onAdd, onRemove, savedFoods, on
       {pendingFood && (
         <div style={{ background: "#1a1a1a", borderRadius: "8px", border: "1px solid #4ecdc430", padding: "12px" }}>
           <div style={{ fontSize: "12px", color: "#fff", marginBottom: "8px" }}>{pendingFood.name}</div>
+
+          {/* Fairlife version selector */}
+          {pendingFood.question.type === "fairlife" && (
+            <>
+              <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>Which Fairlife?</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                {pendingFood.question.options.map(opt => {
+                  const calMatch = opt.match(/(\d+) cal/);
+                  const proteinMatch = opt.match(/(\d+)g protein/);
+                  const cal = calMatch ? parseInt(calMatch[1]) : 0;
+                  const protein = proteinMatch ? parseInt(proteinMatch[1]) : 0;
+                  return (
+                    <button key={opt} onClick={() => { onAdd({ name: `Fairlife Core Power (${protein}g protein)`, cal, protein }); onSaveFood("Fairlife Core Power"); setPendingFood(null); inputRef.current?.focus(); }}
+                      style={{ padding: "10px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>{opt}</button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          {/* Protein powder servings */}
+          {pendingFood.question.type === "protein_powder" && (
+            <>
+              <div style={{ fontSize: "11px", color: "#4ecdc4", marginBottom: "8px" }}>How many scoops?</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                {pendingFood.question.options.map(opt => {
+                  const calMatch = opt.match(/(\d+) cal/);
+                  const proteinMatch = opt.match(/(\d+)g protein/);
+                  const cal = calMatch ? parseInt(calMatch[1]) : 0;
+                  const protein = proteinMatch ? parseInt(proteinMatch[1]) : 0;
+                  return (
+                    <button key={opt} onClick={() => { onAdd({ name: pendingFood.name, cal, protein }); onSaveFood(pendingFood.name); setPendingFood(null); inputRef.current?.focus(); }}
+                      style={{ padding: "10px 12px", borderRadius: "10px", border: "1px solid #4ecdc440", background: "#4ecdc410", color: "#4ecdc4", fontSize: "12px", fontFamily: "inherit", cursor: "pointer", textAlign: "left" }}>{opt}</button>
+                  );
+                })}
+              </div>
+            </>
+          )}
 
           {/* Packages */}
           {pendingFood.question.type === "packages" && (
