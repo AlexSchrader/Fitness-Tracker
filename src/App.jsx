@@ -817,7 +817,6 @@ export default function FitnessTracker() {
 
   const toggleLunchSide = (side) => {
     const current = day.lunchSides || [];
-    const cal = FOOD_DB[side] || 0;
     if (current.includes(side)) {
       updateDay({ lunchSides: current.filter(s => s !== side) });
     } else {
@@ -831,7 +830,7 @@ export default function FitnessTracker() {
     ["morning", "lunch", "dinner", "snack", "preWorkout", "postWorkout"].forEach(s => {
       cal += getSectionCalories(dd[s] || []);
     });
-    (dd.lunchSides || []).forEach(s => { cal += FOOD_DB[s] || 0; });
+    (dd.lunchSides || []).forEach(s => { cal += FOOD_DB[s]?.cal || 0; });
     return cal;
   };
 
@@ -1079,14 +1078,14 @@ export default function FitnessTracker() {
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #ffffff08" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
                 <div style={{ fontSize: "10px", color: "#e94560", letterSpacing: "0.08em" }}>LUNCH</div>
-                <div style={{ fontSize: "11px", color: "#ffffff40" }}>{getSectionCalories(day.lunch) + (day.lunchSides || []).reduce((a, s) => a + (FOOD_DB[s] || 0), 0)} cal</div>
+                <div style={{ fontSize: "11px", color: "#ffffff40" }}>{getSectionCalories(day.lunch) + (day.lunchSides || []).reduce((a, s) => a + (FOOD_DB[s]?.cal || 0), 0)} cal</div>
               </div>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
                 {LUNCH_OPTIONS.map(opt => (
                   <button key={opt} onClick={() => {
                     const exists = (day.lunch || []).find(i => i.name === opt);
                     if (exists) updateDay({ lunch: (day.lunch || []).filter(i => i.name !== opt) });
-                    else addFoodItem("lunch", { name: opt, cal: FOOD_DB[opt] || 0 });
+                    else addFoodItem("lunch", { name: opt, cal: FOOD_DB[opt]?.cal || 0, protein: FOOD_DB[opt]?.protein || 0 });
                   }} style={{ padding: "6px 10px", borderRadius: "12px", border: (day.lunch || []).find(i => i.name === opt) ? "1px solid #e94560" : "1px solid #ffffff15", background: (day.lunch || []).find(i => i.name === opt) ? "#e9456015" : "transparent", color: (day.lunch || []).find(i => i.name === opt) ? "#e94560" : "#ffffff50", fontSize: "11px", fontFamily: "inherit", cursor: "pointer" }}>{opt}</button>
                 ))}
               </div>
