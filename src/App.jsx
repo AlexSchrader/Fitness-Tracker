@@ -792,6 +792,40 @@ export default function FitnessTracker() {
     return () => clearInterval(timerRef.current);
   }, [workoutActive]);
 
+  // Auto-select today's day on load
+  useEffect(() => {
+    const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
+    if (DAYS.includes(today)) setActiveDay(today);
+  }, []);
+
+  // Load saved data on startup
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("fitnessData");
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data.week) setWeek(data.week);
+        if (data.bodyWeights) setBodyWeights(data.bodyWeights);
+        if (data.workoutHistory) setWorkoutHistory(data.workoutHistory);
+        if (data.exerciseProgress) setExerciseProgress(data.exerciseProgress);
+        if (data.totalWorkouts) setTotalWorkouts(data.totalWorkouts);
+        if (data.streak) setStreak(data.streak);
+        if (data.savedFoods) setSavedFoods(data.savedFoods);
+        if (data.settings) setSettings(data.settings);
+      }
+    } catch (e) { console.error("Failed to load saved data", e); }
+  }, []);
+
+  // Save whenever data changes
+  useEffect(() => {
+    try {
+      localStorage.setItem("fitnessData", JSON.stringify({
+        week, bodyWeights, workoutHistory, exerciseProgress,
+        totalWorkouts, streak, savedFoods, settings
+      }));
+    } catch (e) { console.error("Failed to save data", e); }
+  }, [week, bodyWeights, workoutHistory, exerciseProgress, totalWorkouts, streak, savedFoods, settings]);
+
   const day = week[activeDay];
   const updateDay = (fields) => setWeek(w => ({ ...w, [activeDay]: { ...w[activeDay], ...fields } }));
 
