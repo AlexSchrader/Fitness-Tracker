@@ -277,6 +277,7 @@ const FOOD_QUESTIONS = {
   "premier protein powder": { type: "protein_powder", options: ["1 scoop (~130 cal, 30g protein)", "2 scoops (~260 cal, 60g protein)"] },
   "whey protein powder": { type: "protein_powder", options: ["1 scoop (~120 cal, 25g protein)", "2 scoops (~240 cal, 50g protein)"] },
   "protein powder": { type: "protein_powder", options: ["1 scoop (~125 cal, 25g protein)", "2 scoops (~250 cal, 50g protein)"] },
+};
 
 const CALORIE_GOAL_DEFAULT = 3000;
 const PROTEIN_GOAL_DEFAULT = 150;
